@@ -1,0 +1,27 @@
+﻿@model LibraryNew.Models.ViewModel.CategoryVM
+@{
+}
+
+<h2 class="" mb-3 mt-3">Create a category</h2>
+<form asp-action="Create" method="post">
+
+    <div class="">
+        <label asp-for="Category.Genre" class="col-1 mb-1"></label>
+        <span asp-validation-for="Category.Genre" class="col-3 text-danger"></span>
+        <input asp-for="Category.Genre" class="form-control mb-2"/>
+    </div>
+    <div>
+        <label asp-for="Category.Description" class="mb-1 col-1"></label>
+        <span asp-validation-for="Category.Description" class="text-danger col-3"></span>
+        <input asp-for="Category.Description" class="form-control mb-2" />
+    <div>
+        <label asp-for="Category.ParentId" class="mb-1"> Parent Caregory</label>
+        <select asp-for="Category.ParentId" asp-items="Model.AllCategories" class="form-select">
+            <option value=""> None </option>
+        </select>
+    </div>
+
+       @Html.ValidationMessage("my_key", "", new { @class = "text-danger pt-3" })
+
+    <input type="submit" value="Create" class="btn btn-success w-100 mt-3" />
+</form>

@@ -1,0 +1,79 @@
+﻿@model LibraryNew.Models.Book
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<a asp-action="Index">Back to List</a>
+
+<div class="row">
+    <div class="col-xl-4">
+        <img src="@Model.ImagePath" width="100%" height="100%"></img>
+    </div>
+    <div class="col-xl-5">
+        <h2>@Html.DisplayFor(model => model.Title)</h2>
+
+        @if(Model.BookAuthors.ToList().Count > 0){
+        <p>@Html.DisplayFor(model => model.BookAuthors.ToList()[0].Author.FirstName)
+            @Html.DisplayFor(model => model.BookAuthors.ToList()[0].Author.LastName)</p>
+        }
+        
+        <a class="btn btn-primary" asp-action="Read" asp-controller="Book" asp-route-id="@Model.Id">Read</a>
+
+        <p>@Html.DisplayFor(model => model.Description)</p>
+    </div>
+    <div class="col-xl-3">
+        <table class="table table-striped">
+         
+            <tbody>
+                <tr>
+                    <th scope="row">Author/s</th>
+                    <td>
+                        @for(int i = 0; i< Model.BookAuthors.Count(); i++)
+                        {
+                            
+                            @Model.BookAuthors.ToList()[i].Author.FirstName @: @Model.BookAuthors.ToList()[i].Author.LastName
+                            @if (i != Model.BookAuthors.Count() - 1)
+                            {
+                                @:,
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>Publishing Year</th>
+                    <td>@Html.DisplayFor(model => model.PublishingYear)</td>
+                </tr>
+                <tr>
+                    <th>Pages</th>
+                    <td>@Html.DisplayFor(model => model.Pages)</td>
+                </tr>
+                <tr>
+                    <th>Language</th>
+                    <td>@Html.DisplayFor(model => model.Language)</td>
+                </tr>
+                <tr>
+                    <th>Category</th>
+                    <td>@Html.DisplayFor(model => model.Category.Genre)</td>
+                </tr>
+                <tr>
+                    <th>Book award</th>
+                    <td>
+                        @if (Model.BookAward)
+                        {
+                            @:Yes
+                        }
+                        else
+                        {
+                            @:No
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-dark mt-2">Edit</a>
+</div>

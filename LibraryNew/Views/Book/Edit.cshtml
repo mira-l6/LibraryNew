@@ -1,0 +1,66 @@
+﻿@model LibraryNew.Models.ViewModel.BookVM;
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="@Model.book.Id" />
+    <div>
+        <label asp-for="@Model.book.Title" class="col-1 mb-1"></label>
+        <span class="text-danger" asp-validation-for="@Model.book.Title"></span>
+        <input asp-for="@Model.book.Title" class="form-control"/>
+    </div>
+    <div>
+        <label asp-for="@Model.book.Description" class="col-1 mb-1"></label>
+        <span class="text-danger" asp-validation-for="@Model.book.Description"></span>
+        <input asp-for="@Model.book.Description" class="form-control"/>
+    </div>
+    <div>
+        <label asp-for="FileIMG" class="col-1 mb-1"></label>
+        <span class="text-danger" asp-validation-for="@Model.ImgAcceptType"></span>
+        <input asp-for="FileIMG" accept="@Model.ImgAcceptType" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="FilePDF" class="col-1 mb-1"></label>
+        <span class="text-danger" asp-validation-for="@Model.FilePDF"></span>
+        <input asp-for="FilePDF" accept="@Model.PDFAcceptTypes" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="book.PublishingYear" class="col-1 mb-1"></label>
+        <span class="text-danger" asp-validation-for="@Model.book.PublishingYear"></span>
+        <input asp-for="book.PublishingYear" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="book.Pages" class="col-1 mb-1"></label>
+        <span class="text-danger" asp-validation-for="@Model.book.Pages"></span>
+        <input asp-for="book.Pages" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="book.Language" class="col-1 mb-1"></label>
+        <span class="text-danger" asp-validation-for="@Model.book.Language"></span>
+        <input asp-for="book.Language" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="book.BookAward" class="col-1 mb-1"></label>
+        <span class="text-danger" asp-validation-for="@Model.book.BookAward"></span>
+        <input asp-for="book.BookAward" class="mb-1" />
+    </div>
+    <div>
+        <label asp-for="book.CategoryId"></label>
+        <span class="text-danger" asp-validation-for="@Model.book.CategoryId"></span>
+        <select asp-for="book.CategoryId" asp-items="Model.categories" class="form-select">
+        </select>
+    </div>
+
+    <div>
+        <label asp-for="SelectedAuthorsId"></label>
+        <span class="text-danger" asp-validation-for="@Model.SelectedAuthorsId"></span>
+        <select asp-for="SelectedAuthorsId" asp-items="Model.authors" class="form-select" multiple="multiple">
+        </select>
+    </div>
+
+    <input type="submit" value="Save" />
+</form>
+

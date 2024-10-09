@@ -1,0 +1,37 @@
+﻿@model IEnumerable<LibraryNew.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@functions {
+    public static string TrimDescr(string value, int maxChars)
+    {
+        if (string.IsNullOrEmpty(value)) return value;
+        return value.Length <= maxChars ? value : value.Substring(0, maxChars) + "...";
+    }
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="d-flex flex-wrap justify-content-around">
+
+    @foreach (var item in Model)
+    {
+        <div class="card m-2" style="width: 18rem; max-height: 33rem">
+            <img class="card-img-top h-50" style="object-fit: cover" src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title) (@Html.DisplayFor(modelItem => item.PublishingYear)) </h5>
+                <p class="card-text">@TrimDescr(item.Description, 100)</p>
+                <a asp-action="Details" asp-controller="Book" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    }
+
+
+</div>
+

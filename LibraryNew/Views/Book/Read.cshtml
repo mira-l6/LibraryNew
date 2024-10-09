@@ -1,0 +1,5 @@
+﻿@model LibraryNew.Models.Book
+@{
+}
+<a href="@Url.Content(Model.PdfFilePath)">Download</a>
+<embed src="@Url.Content(Model.PdfFilePath)" type="application/pdf" width="100%" height="800px"/>

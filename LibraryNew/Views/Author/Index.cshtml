@@ -1,0 +1,42 @@
+﻿@model IEnumerable<LibraryNew.Models.Author>
+
+
+<a asp-action="Create" class="btn btn-dark mb-2">Create new</a>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthYear)
+            </th>
+            <th>
+               
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var author in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => author.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m=> author.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(m=>author.BirthYear)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@author.Id" class="text-dark"> Edit  </a> | 
+                    <a asp-action="Delete" asp-route-id="@author.Id" class="text-dark"> Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

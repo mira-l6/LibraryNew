@@ -1,0 +1,51 @@
+﻿@model IEnumerable<LibraryNew.Models.Category>
+@{
+}
+
+<a asp-action="Create" class="btn btn-dark mb-2">Create</a>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentCategory)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(m => category.Genre)
+                </td>
+                <td>
+                    @Html.DisplayFor(m => category.Description)
+                </td>
+                <td>
+                    @if(category.ParentCategory != null) @Html.DisplayFor(m => category.ParentCategory.Genre)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@category.Id" class="text-dark"> Edit  </a> |
+                    <a href='#' onclick="confirmDelete('@category.Id', '@category.Genre')" class="text-dark"> Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function confirmDelete(id, genre) {
+        if (confirm(`Are you sure u want to delete this genre: ${genre}`)) {
+            window.location.href = `/Category/Delete/${id}`;
+        }
+    }
+</script>

@@ -1,0 +1,32 @@
+﻿body {
+    /*margin-bottom: 60px;*/
+    background: rgba(217, 217, 217, 0.7);
+    overflow-x: hidden;
+    /*font-family: initial;*/
+}
+.navbar {
+    margin-bottom: 0 !important;
+}
+
+.container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.greeting-body {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/img/library.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*filter: brightness(70%);*/
+    color: white;
+    width: 100vw;
+    margin: 0 !important;
+    padding: 7em 0em 7em 0em;
+}
+
+.quote-body {
+    width: 100vw;
+    text-align: center;
+    padding: 2em 0em 2em 0em;
+    font-size: 1.5em;
+}

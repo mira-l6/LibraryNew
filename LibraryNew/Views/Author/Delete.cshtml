@@ -1,0 +1,18 @@
+﻿@model LibraryNew.Models.Author
+@{
+}
+
+<h2 class="mb-5 mt-5 text-center">Are you sure you want to delete the author - @Html.DisplayFor(m=>Model.FirstName) @Html.DisplayFor(m=>Model.LastName)?</></h2>
+
+@using(Html.BeginForm("Delete","Author", FormMethod.Post))
+{
+
+    @Html.HiddenFor(m=> m.Id)
+    @Html.HiddenFor(m=>m.FirstName)
+    @Html.HiddenFor(m=>m.LastName)
+    <button type="submit" class="btn btn-secondary w-100 mb-2">Confirm</button>
+}
+
+<a asp-action="Index">
+    <button class="btn btn-danger w-100">Cancel</button> 
+</a>
