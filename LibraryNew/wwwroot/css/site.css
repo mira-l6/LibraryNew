@@ -29,6 +29,7 @@ body {
     /*background: rgba(217, 217, 217, 0.7);
     overflow-x: hidden;*/
     /*font-family: initial;*/
+    overflow-x: hidden !important;
 }
 .navbar {
     margin-bottom: 0 !important;

@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Chat Bot";
+}
+
+<form class="form-floating" asp-action="Index" method="post">
+    <input type="text" class="form-control" id="floatingInputValue" name="question" />
+    <label for="floatingInputValue">AI knows! Just ask.</label>
+    <button type="submit" class="btn btn-primary">Sucker Button</button>
+</form>
+
+
+@if(ViewBag.Answer != null)
+{
+    <div class="alert alert-primary" role="alert">
+        @ViewBag.Answer
+    </div>
+}

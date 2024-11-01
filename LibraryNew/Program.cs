@@ -1,3 +1,4 @@
+using GroqSharp;
 using LibraryNew.Data;
 using LibraryNew.Services;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +8,7 @@ namespace LibraryNew
 {
     public class Program
     {
-        public static async void Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +19,21 @@ namespace LibraryNew
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+
+            var apiKey = builder.Configuration["ApiKey"];
+            var apiModel = "llama-3.1-70b-versatile";
+
+            builder.Services.AddSingleton<IGroqClient>(gc =>
+            new GroqClient(apiKey, apiModel)
+            .SetTemperature(0.5)
+            .SetMaxTokens(512)
+            .SetTopP(1)
+            .SetStop("NONE")
+            .SetStructuredRetryPolicy(5));
+
 
             builder.Services.AddSingleton<ITimeNow,TimeService>();
             builder.Services.AddSingleton<IGreeting, Greeting>();
@@ -57,50 +70,12 @@ namespace LibraryNew
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            await CreateRolesAndAdmin(app);
+           
 
             app.Run();
-
-
-            async Task CreateRolesAndAdmin(IApplicationBuilder)
-            {
-                using (var scope = app.Services.CreateScope())
-                {
-                    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-                    var roles = new[] { "Admin", "User", "Manager" };
-                    foreach (var role in roles)
-                    {
-                        if (!await roleManager.RoleExistsAsync(role))
-                        {
-                            await roleManager.CreateAsync(new IdentityRole(role));
-                        }
-                    }
-
-                    const string email = "admin@admin.admin";
-                    const string password = "Admin123#";
-
-                    if (await userManager.FindByEmailAsync(email) == null)
-                    {
-                        var user = new IdentityUser
-                        {
-                            UserName = email,
-                            Email = email,
-                        };
-
-
-                        var result = await userManager.CreateAsync(user, password);
-                        if (result.Succeeded)
-                        {
-                            await userManager.AddToRoleAsync(user, "Admin");
-                        }
-
-                    }
 
 
                 }
             }
         }
-    }
-}
+    

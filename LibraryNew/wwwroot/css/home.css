@@ -1,7 +1,7 @@
 ﻿body {
     /*margin-bottom: 60px;*/
     background: rgba(217, 217, 217, 0.7);
-    overflow-x: hidden;
+    overflow-x: hidden !important;
     /*font-family: initial;*/
 }
 .navbar {
