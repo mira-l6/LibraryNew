@@ -1,0 +1,114 @@
+﻿input {
+    cursor: default;
+}
+
+.cb-initial-question{
+    justify-content: space-around;
+}
+
+    #cb-initial-input {
+        /*border: 2px solid var(--primary-darkBrown-color) !important;*/
+        background-color: var(--secondary-grey-color);
+        height: 99%;
+        font-size: 0.9em;
+        width: 89%;
+        border: none;
+        padding: 0.8em;
+        border-radius: 5px;
+    }
+.cb-renderBtn{
+    background-color: var(--primary-darkBrown-color);
+    width: 6%;
+    border-radius: 10px;
+    border: none;
+    padding: 0.7em 0 0.7em 0;
+}
+
+    .cb-renderBtn i {
+        transform: rotate(45deg);
+        color: white;
+        font-size: 1em;
+    }
+
+
+.greeting-text {
+    padding: 8em 0em 8em 0em;
+    width: 50%;
+}
+
+.chatbot-activeSpace {
+    margin: 1em 1em 1em 0;
+    background-color: rgba(255,255,255, 0.9);
+    border-radius: 5px;
+    border-bottom: 5px solid var(--primary-darkBrown-color);
+}
+.chatbot-title{
+    background: white;
+    border-radius: 5px;
+    color: black;
+    font-weight: 500;
+    padding: 1em;
+    justify-content: space-between;
+}
+
+.chatbot-title button{
+    background: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+.chatbot-title button:hover{
+    background-color: var(--primary-darkBrown-color);
+    color: white;
+}
+
+.response {
+    margin: 1em;
+    border-radius: 5px;
+    max-height: 90%;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+.response-avatar {
+    background: rgba(77, 45, 24);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 0.4em;
+    gap: 1em;
+}
+.response-text {
+    box-shadow: -2px 0px 27px 0px rgba(172, 165, 172, 0.4);
+    background: white;
+    color: black;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 1em 2em 1em 2em;
+    overflow-y: scroll;
+    max-height: 10em;
+}
+
+/*.chatbot-questionspace{
+    background: white;
+    padding: 0.5em;
+    border-radius: 5px;
+    gap: 1em;
+}
+*/
+/*    .chatbot-questionspace input {
+        padding: 0.5em;
+        font-size: 0.8em;
+        border-radius: 5px;
+        width: 90%;
+        border: none;
+        box-shadow: -2px 0px 27px 7px rgba(172, 165, 172, 0.4);
+    }
+    .chatbot-questionspace button{
+        background-color: var(--primary-black-color);
+        padding: 0.3em;
+        width: 7%;
+        border-radius: 5px;
+        color: white;
+    }
+    .chatbot-questionspace button i{
+        transform: rotate(45deg);
+    }*/

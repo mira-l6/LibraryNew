@@ -58,6 +58,27 @@
                     <td>@Html.DisplayFor(model => model.Category.Genre)</td>
                 </tr>
                 <tr>
+                    <th>Rating</th>
+                    <td>@Html.DisplayFor(model => model.Rating)</td>
+                </tr>
+                <tr>
+                    <th>Review</th>
+                    <td>@Html.DisplayFor(model => model.Review)</td>
+                </tr>
+                <tr>
+                    <th>Publicity</th>
+                    <td>
+                        @if (Model.IsPublic)
+                        {
+                            @:Yes
+                        }
+                        else
+                        {
+                            @:No
+                        }
+                    </td>
+                </tr>
+                <tr>
                     <th>Book award</th>
                     <td>
                         @if (Model.BookAward)
@@ -76,4 +97,5 @@
 
 </div>
 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-dark mt-2">Edit</a>
+<a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-dark mt-2">Delete</a>
 </div>

@@ -8,8 +8,8 @@ namespace LibraryNew.Controllers
 {
     public class AuthorController : BaseController
     {
-        private readonly ApplicationDbContext _context;
-        public AuthorController(ApplicationDbContext db) { 
+        private readonly LibraryDbContext _context;
+        public AuthorController(LibraryDbContext db) { 
             _context = db;
         }
         public IActionResult Index()

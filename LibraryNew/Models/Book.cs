@@ -24,6 +24,17 @@ namespace LibraryNew.Models
         [Required(ErrorMessage = "Publishing Year is required")]
         public int? PublishingYear { get; set; }
 
+        [Range(1,10)]
+        [DisplayName("Rating ( 1 - 10 )")]
+        public int? Rating { get; set;}
+
+        [DisplayName("Review / Comment")]
+        public string? Review { get; set; }
+
+        [Required(ErrorMessage ="Publicity choice is required")]
+        [DisplayName("Private or public choice")]
+        public bool IsPublic { get; set; }
+
         [Required(ErrorMessage ="Pages are required")]
         public int? Pages { get; set; }
 

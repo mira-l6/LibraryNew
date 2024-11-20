@@ -1,0 +1,20 @@
+﻿@model LibraryNew.Models.Book
+@{
+}
+
+<div>
+    <h3>Are you sure you want to delete <span>@Html.DisplayFor(b => Model.Title)</span>?</h3>
+
+    @using(Html.BeginForm("Delete", "Book", FormMethod.Post))
+    {
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Title)
+        @Html.HiddenFor(m => m.Description)
+        <button type="submit">Confirm</button>
+    }
+
+    <a asp-action="Index">
+        <button class="btn btn-danger w-100">Cancel</button>
+    </a>
+</div>

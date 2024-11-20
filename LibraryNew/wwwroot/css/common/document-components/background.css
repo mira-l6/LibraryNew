@@ -1,0 +1,120 @@
+﻿
+.greeting-body {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/publicImages/library.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    gap: 6.9em;
+    color: white;
+    width: 100vw;
+    margin: 0 !important;
+    padding: 0;
+    justify-content: right;
+    padding: 1.5em 3em 0.5em 1em;
+}
+
+.main-body{
+    width: 100vw;
+    height: calc(100vh - 78.4px - 56.8px);
+    display: flex;
+    flex-direction: row;
+}
+.greeting-body h2{
+    font-weight: 700 !important;
+    cursor: pointer;
+    color: white !important;
+}
+.greeting-body h2 a{
+    color: white !important;
+}
+.static-features{
+    height: 100%;
+    width: 40%;
+}
+
+.chatbot-activeSpace {
+    display: block !important;
+    /*width: 95% !important;*/
+    height: 17em;
+    border-bottom: none !important;
+    background: var(--secondary-grey-color) !important;
+}
+
+.cb-initial-question {
+    justify-content: space-around;
+    width: 100% !important;
+    padding: 0.5em 0.5em 1em 0.5em !important;
+}
+
+.chatbot-textSpace{
+    height: 10em;
+}
+
+#cb-initial-input {
+    cursor: pointer;
+    background: white !important;
+}
+
+.cb-initial-question button {
+    background-color: var(--primary-lightBrown-color);
+    padding: 0.3em;
+    width: 7%;
+    border: none;
+    border-radius: 50%;
+    color: white;
+}
+
+    .cb-initial-question button i {
+        transform: rotate(45deg);
+        font-size: 1.2em;
+    }
+
+.response-avatar {
+    color: white !important
+}
+
+.chatbot-title {
+    border-top: 1px solid var(--secondary-grey-color);
+    border-left: 1px solid var(--secondary-grey-color);
+    border-right: 1px solid var(--secondary-grey-color);
+    padding: 0.5em 1em 0.3em 1em !important;
+}
+
+.quote-space{
+    width: 97%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2em 1em 1em 1em;
+}
+
+.quote-text-space {
+    padding: 1em;
+    border: 5px solid rgba(77,45,24, 0.4);
+    border-radius: 5px;
+    text-align: center
+}
+.quote-text-space h5{
+    padding: 0 2em 0 2em;
+}
+
+.quote-mark{
+    color: black;
+}
+.left-quotemark-container, .right-quotemark-container {
+    width: 100%;
+    display: flex;
+}
+.left-quotemark-container{
+    justify-content: left;
+}
+.right-quotemark-container{
+    justify-content: right;
+}
+
+.static-redirect-publicLB{
+    border: none;
+    padding: 0.8em;
+    border-radius: 5px;
+}

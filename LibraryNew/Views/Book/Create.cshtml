@@ -40,6 +40,21 @@
         <input asp-for="book.Language" class="form-control" />
     </div>
     <div>
+        <label asp-for="book.Rating" class="col-1 mb-1"></label>
+        <span asp-validation-for="@Model.book.Rating" class="text-danger"></span>
+        <input asp-for="book.Rating" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="book.Review" class="col-1 mb-1"></label>
+        <span asp-validation-for="@Model.book.Review" class="text-danger"></span>
+        <input asp-for="book.Review" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="book.IsPublic" class="col-1 mb-1"></label>
+        <span asp-validation-for="@Model.book.IsPublic" class="text-danger"></span>
+        <input asp-for="book.IsPublic" class="mb-1" />
+    </div>
+    <div>
         <label asp-for="book.BookAward" class="col-1 mb-1"></label>
         <span asp-validation-for="@Model.book.BookAward" class="text-danger"></span>
         <input asp-for="book.BookAward" class="mb-1"/>

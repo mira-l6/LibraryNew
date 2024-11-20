@@ -10,18 +10,40 @@ namespace LibraryNew.Controllers
 {
     public class BookController : BaseController
     {
-        private ApplicationDbContext _context;
+        private LibraryDbContext _context;
 
         private readonly IHostingEnvironment _environment;
 
-        public BookController(ApplicationDbContext context, IHostingEnvironment hostingEnvironment)
+        public BookController(LibraryDbContext context, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
             _environment = hostingEnvironment;
         }
+
         public IActionResult Index()
         {
+            List<Book> books = _context.Books.Where(b => !b.IsPublic).ToList();
+            return View(books);
+        }
+
+        public IActionResult PublicIndex()
+        {
+            List<Book> publicBooks = _context.Books.Where(b => b.IsPublic).ToList();
+            return View(publicBooks);
+        }
+
+        public IActionResult Review()
+        {
             List<Book> books = _context.Books.ToList();
+            var averageRating = books.Average(x => x.Rating);
+            var positiveReviews = books.Count(r => r.Rating >= 6);
+            var negativeReviews = books.Count(r => r.Rating <= 4);
+            var neutralReviews = books.Count(r => r.Rating == 5);
+
+            ViewBag.AverageRating = averageRating;
+            ViewBag.PositiveReviews = positiveReviews;
+            ViewBag.NegativeReviews = negativeReviews;
+            ViewBag.NeutralReviews = neutralReviews;
             return View(books);
         }
 
@@ -84,6 +106,9 @@ namespace LibraryNew.Controllers
                 PublishingYear = model.book.PublishingYear,
                 Pages = model.book.Pages,
                 Language = model.book.Language,
+                Rating = model.book.Rating,
+                Review = model.book.Review,
+                IsPublic = model.book.IsPublic,
                 BookAward = model.book.BookAward,
                 BookAuthors = bookAuthors,
                 PdfFilePath = await GetFilePath("Pdf", model.FilePDF),
@@ -112,6 +137,21 @@ namespace LibraryNew.Controllers
         {
             Book book = _context.Books.FirstOrDefault(b=>b.Id == Id);
             return View(book);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int Id)
+        {
+            var currentBook = _context.Books.Where(bookId => bookId.Id == Id).FirstOrDefault();
+            return View(currentBook);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Book book)
+        {
+            _context.Books.Remove(book);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -186,6 +226,9 @@ namespace LibraryNew.Controllers
             currentBook.BookAuthors = bookAuthors;
             currentBook.Pages = model.book.Pages;
             currentBook.Language = model.book.Language;
+            currentBook.Rating = model.book.Rating;
+            currentBook.Review = model.book.Review;
+            currentBook.IsPublic = model.book.IsPublic;
             currentBook.BookAward = model.book.BookAward;
             currentBook.PdfFilePath = await GetFilePath("Pdf", model.FilePDF);
             currentBook.ImagePath = await GetFilePath("Img", model.FileIMG);

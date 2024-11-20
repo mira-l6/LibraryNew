@@ -1,0 +1,46 @@
+﻿body {
+    /*margin-bottom: 60px;*/
+    background: rgba(217, 217, 217, 0.7);
+    overflow: hidden !important;
+    /*font-family: initial;*/
+}
+.navbar {
+    margin-bottom: 0 !important;
+}
+
+.container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.greeting-body {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/publicImages/library.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    gap: 6.9em;
+    color: white;
+    width: 100vw;
+    margin: 0 !important;
+    padding: 0;
+}
+
+.quote-body {
+    width: 100vw;
+    text-align: center;
+    padding: 2em 0em 2em 0em;
+    font-size: 1.5em;
+}
+.chatbot-activeSpace {
+    display: none;
+    width: 40%;
+    height: 80%;
+}
+.cb-initial-question:hover input {
+    background-color: white !important;
+}
+
+.chatbot-textSpace {
+    height: 13em;
+}

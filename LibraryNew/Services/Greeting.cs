@@ -4,7 +4,7 @@
     {
         public string GetGreeted()
         {
-            string[] greetings = { "Welcome!", "Hello!", "Good to see you!"};
+            string[] greetings = { "Welcome", "Hello", "Good to see you"};
             Random r = new Random();
             return greetings[r.Next(0, greetings.Length)];
         }

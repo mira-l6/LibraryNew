@@ -3,23 +3,25 @@ using LibraryNew.Data;
 using LibraryNew.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Text;
 
 namespace LibraryNew
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContext<LibraryDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<LibraryDbContext>();
             builder.Services.AddControllersWithViews();
 
 
@@ -37,13 +39,14 @@ namespace LibraryNew
 
             builder.Services.AddSingleton<ITimeNow,TimeService>();
             builder.Services.AddSingleton<IGreeting, Greeting>();
-            builder.Services.AddSingleton<IQuote, Quote>();
+            builder.Services.AddSingleton<IQuoteGenerate, QuoteGenerate>();
            // builder.Services.AddScoped;
            // builder.Services.AddTransient
 
             
 
             var app = builder.Build();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -70,7 +73,54 @@ namespace LibraryNew
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-           
+
+
+
+            //Roles
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+
+                var roles = new[] {
+                    "Admin",
+                    "User"
+                };
+
+                foreach (var role in roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }
+                }
+
+                var adminEmail = "admin@gmail.com";
+                var adminPassword = "Admin_123";
+
+                if (await userManager.FindByEmailAsync(adminEmail) == null)
+                {
+                    var admin = new IdentityUser
+                    {
+                        UserName = adminEmail,
+                        Email = adminEmail
+                    };
+
+                    var finalResult = await userManager.CreateAsync(admin, adminPassword);
+                    if (finalResult.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(admin, "Admin");
+                    }
+                }
+
+            }
+
+
+
+
+
 
             app.Run();
 
@@ -78,4 +128,7 @@ namespace LibraryNew
                 }
             }
         }
+
+
+
     

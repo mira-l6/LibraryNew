@@ -12,26 +12,100 @@
     }
 }
 
-<h1>Index</h1>
+<head>
+    <link rel="stylesheet" href="~/css/common/document-components/background.css" />
+    <link rel="stylesheet" href="~/css/common/variables/components.css" />
+    <link rel="stylesheet" href="~/css/shared/site.css" />
+    <link rel="stylesheet" href="~/css/common/document-components/chatbot.css" />
+    <link rel="stylesheet" href="~/css/pages/books-index.css"/>
+</head>
+<body>
+    <div class="greeting-body">
+        <h2><a asp-controller="Book" asp-action="Index">Book_Shelf</a></h2>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 
-<div class="d-flex flex-wrap justify-content-around">
+    <div class="main-body">
 
-    @foreach (var item in Model)
-    {
-        <div class="card m-2" style="width: 18rem; max-height: 33rem">
-            <img class="card-img-top h-50" style="object-fit: cover" src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title) (@Html.DisplayFor(modelItem => item.PublishingYear)) </h5>
-                <p class="card-text">@TrimDescr(item.Description, 100)</p>
-                <a asp-action="Details" asp-controller="Book" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+        <div class="book-display d-flex flex-wrap justify-content-around">
+
+            <div class="sort-filter-space d-flex justify-content-around">
+                <div class="sort-space d-flex flex-row">
+                    <input type="type" name="name" value="" />
+                    <p><a asp-action="Create">Create New</a></p>
+                    <button id="hideOrShowStaticFeatures" class="d-flex justify-content-center align-items-center staticShow-Hide"><i class="material-icons">arrow_drop_up</i></button>
+
+                </div>
+            </div>
+            
+            <div class="bookshelf-display">
+
+                @foreach (var item in Model)
+                {
+                    <div class="card m-2" style="width: 18rem; max-height: 33rem">
+                        <img class="card-img-top h-50" style="object-fit: cover" src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title) (@Html.DisplayFor(modelItem => item.PublishingYear)) </h5>
+                            <p class="card-text">@TrimDescr(item.Description, 100)</p>
+
+                            <p class="card-text">
+                                <strong>Rating:</strong> @Html.DisplayFor(modelItem => item.Rating) / 10
+                            </p>
+                            <p class="card-text">
+                                <strong>Review:</strong> @Html.DisplayFor(modelItem => item.Review)
+                            </p>
+                            <p class="card-text">
+                                <strong>Publicity:</strong> @Html.DisplayFor(modelItem => item.IsPublic)
+                            </p>
+
+                            <a asp-action="Details" asp-controller="Book" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-    }
 
+        <div class="static-features">
 
-</div>
+            <div class="quote-space">
+                <div class="quote-text-space">
+                    <div class="left-quotemark-container">
+                        <i class="material-icons quote-mark">format_quote</i>
+                    </div>
+                    <h5>This is the quote of the day and it should have a certain value for max chars allowed.</h5>
+                    <div class="right-quotemark-container">
+                        <i class="material-icons quote-mark">format_quote</i>
+                    </div>
+                    <div class="quote-author">
+                        <h6>Author LastName</h6>
+                    </div>
+                </div>
+            </div>
+
+            <button class="static-redirect-publicLB"><a asp-controller="Book" asp-action="PublicIndex">Check out the public library -></a></button>
+
+            <div class="chatbot-activeSpace">
+                <div class="chatbot-title d-flex flex-row">
+                    <p>ChatBot Library Helper</p>
+                    <button class="d-flex justify-content-center align-items-center"><i class="material-icons">arrow_drop_down</i></button>
+                </div>
+                <div class="chatbot-textSpace">
+                    <div class="response">
+                        <div class="response-avatar d-flex flex-row">
+                            <i class="material-icons">book</i>
+                            <p>This will be the question?</p>
+                        </div>
+                        <div class="response-text"></div>
+                    </div>
+                </div>
+                <div class="cb-initial-question d-flex flex-row">
+                    <input type="text" id="cb-initial-input" name="cb-initial-input" placeholder="Ask a question..." />
+                    <button type="button" class="flex-center"><i class="material-icons">eject</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/views/booksIndex.js"></script>
+</body>
 

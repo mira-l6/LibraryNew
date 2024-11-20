@@ -3,10 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LibraryNew</title>
+    <title>@ViewData["Title"] LibraryNew</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/filter-style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/shared/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/common/document-components/filter-style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/common/variables/components.css"/>
     <link rel="stylesheet" href="~/LibraryNew.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -24,17 +26,25 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="Index">Author</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Bookshelf</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="Index">Author_Archive</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Index">Book</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="PublicIndex">Public_Library</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ChatBot" asp-action="Index">ChatBot</a>
-                        </li>
+                        @{
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Review">Library_Review</a>
+                                </li>
+                            }
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

@@ -1,0 +1,72 @@
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+*{
+    box-sizing: border-box;
+}
+
+body {
+    /*margin-bottom: 60px;*/
+    /*background: rgba(217, 217, 217, 0.7);
+    overflow-x: hidden;*/
+    /*font-family: initial;*/
+    overflow-x: hidden !important;
+}
+.navbar {
+    margin-bottom: 0 !important;
+}
+.container{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+p{
+    margin-bottom: 0;
+}
+
+nav li, .nav a{
+    position: relative;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    border-radius: 0 !important;
+    background: var(--primary-darkBrown-color);
+    left: 50%;
+    bottom: 0;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+nav a:hover::after {
+    width: 100%;
+}
+
+.greeting-body h1, .greeting-body h2 {
+    opacity: 0; 
+    transform: translateY(20px); 
+    animation: fadeIn 1s ease-out forwards; 
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

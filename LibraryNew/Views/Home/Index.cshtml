@@ -2,48 +2,66 @@
     ViewData["Title"] = "Home Page";
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/pages/home.css"/>
+    <link rel="stylesheet" href="~/css/common/variables/components.css"/>
+    <link rel="stylesheet" href="~/css/common/document-components/chatbot.css"/>
+</head>
 <div class="greeting-body">
-    <h1 class="text-center">@ViewBag.Greeting</h1>
+    <div class="greeting-text w-100">
+        <h1 class="text-center">@ViewBag.Greeting ivan ivanov!</h1>
+    </div>
+    <div class="chatbot-activeSpace">
+        <div class="chatbot-title d-flex flex-row">
+            <p>ChatBot Library Helper</p>
+            <button class="d-flex justify-content-center align-items-center"><i class="material-icons">arrow_drop_down</i></button>
+        </div>
+        <div class="chatbot-textSpace">
+            <div class="response">
+                <div class="response-avatar d-flex flex-row">
+                    <i class="material-icons">book</i>
+                    <p>This will be the question?</p>
+                </div>
+                <div class="response-text"></div>
+            </div>
+        </div>
+        @* <div class="chatbot-questionSpace d-flex flex-row">
+            <input type="text" name="cb-initial-input" placeholder="Ask a question..." />
+            <button type="button" class="flex-center"><i class="material-icons">eject</i></button>
+        </div> *@
+    </div>
 </div>
 <div class="filter-body">
     <section>
-        <div class="filter-area pt-5 pb-5 d-flex flex-row justify-content-around">
-            <form method="post">
+        <div class="filter-area pt-4 pb-4 d-flex flex-row justify-content-around">
+            <section>
                 <div class="filter-box">
                     <div class="filter-option">
-                        <label for="property-type">Type redirect</label>
+                        <a href="">Books_Library</a>
                     </div>
                     <div class="line-break">
                         <div></div>
                     </div>
                     <div class="filter-option">
-                        <label for="populated-place">Type redirect</label>
+                        <a href="">Authors_Archive</a>
                     </div>
                     <div class="line-break">
                         <div></div>
                     </div>
                     <div class="filter-option">
-                        <label for="town-area">Type redirect</label>
+                        <a href="">Public_Library</a>
                     </div>
                     <div class="line-break">
                         <div></div>
                     </div>
-                    <div class="filter-option">
-                        <label for="max-price">Type redirect</label>
-                    </div>
-                    <div class="line-break">
-                        <div></div>
-                    </div>
-                    <div class="filter-option">
-                        <label for="quadrature">Type redirect</label>
+
+                    <div class="cb-initial-question filter-option d-flex flex-row">
+                        <input type="text" name="cb-initial-input" id="cb-initial-input" placeholder="Ask a question..." />
+                        <button type="button" class="cb-renderBtn flex-center"><i class="material-icons">eject</i></button>
                     </div>
                 </div>
 
-            </form>
-
-            <div class="filter-search-button">
-                <button class="p-3">-></button>
-            </div>
+            </section>
         </div>
     </section>
 </div>
@@ -51,6 +69,8 @@
     <q>This will be the quote of the day</q>
     <p>-Author/Person</p>
 </div>
+
+z<script src="/js/partialViews/chatbotView.js" defer type="text/javascript"></script>
 
 
 @* <h2>Текущото време е:

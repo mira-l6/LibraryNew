@@ -5,13 +5,16 @@ using LibraryNew.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryNew.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CategoryController : BaseController
     {
-        public readonly ApplicationDbContext _context;
-        public CategoryController(ApplicationDbContext context)
+        public readonly LibraryDbContext _context;
+        public CategoryController(LibraryDbContext context)
         {
             _context = context;
         }

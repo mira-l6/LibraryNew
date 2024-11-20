@@ -35,13 +35,13 @@ namespace LibraryNew.NUnitTests.BookTest
     [TestFixture]
     public class BookTest
     {
-        private Mock<ApplicationDbContext> _mockContext;
+        private Mock<LibraryDbContext> _mockContext;
         private BookController _controller;
         private Mock<Microsoft.AspNetCore.Hosting.IHostingEnvironment> _mockEnvironment;
 
         public void SetUp()
         {
-            _mockContext = new Mock<ApplicationDbContext>();
+            _mockContext = new Mock<LibraryDbContext>();
             _mockEnvironment = new Mock<Microsoft.AspNetCore.Hosting.IHostingEnvironment>();
             _controller = new BookController(_mockContext.Object, _mockEnvironment.Object);
         }

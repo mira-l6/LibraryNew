@@ -1,0 +1,23 @@
+:root {
+    --primary-black-color: #101010;
+    --primary-darkBrown-color: #4D2D18;
+    --primary-lightBrown-color: #808080;
+    --primary-beige-color: #dec8b9;
+    --primary-milkWhite-color: #b59682;
+    --secondary-grey-color: #d9d9d9;
+}
+
+@font-face {
+    font-family: initial;
+    src: url(/font/Andika-Bold.ttf)
+}
+
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.border-10{
+    border-radius: 10px;
+}

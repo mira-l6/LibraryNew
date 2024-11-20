@@ -1,0 +1,43 @@
+﻿@model IEnumerable<LibraryNew.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@functions {
+    public static string TrimDescr(string value, int maxChars)
+    {
+        if (string.IsNullOrEmpty(value)) return value;
+        return value.Length <= maxChars ? value : value.Substring(0, maxChars) + "...";
+    }
+}
+
+<h1>Public Library</h1>
+
+<div class="d-flex flex-wrap justify-content-around">
+
+    @foreach (var item in Model)
+    {
+        <div class="card m-2" style="width: 18rem; max-height: 33rem">
+            <img class="card-img-top h-50" style="object-fit: cover" src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title) (@Html.DisplayFor(modelItem => item.PublishingYear)) </h5>
+                <p class="card-text">@TrimDescr(item.Description, 100)</p>
+
+                <p class="card-text">
+                    <strong>Rating:</strong> @Html.DisplayFor(modelItem => item.Rating) / 10
+                </p>
+                <p class="card-text">
+                    <strong>Review:</strong> @Html.DisplayFor(modelItem => item.Review)
+                </p>
+                <p class="card-text">
+                    <strong>Publicity:</strong> @Html.DisplayFor(modelItem => item.IsPublic)
+                </p>
+
+                <a asp-action="Details" asp-controller="Book" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+            </div>
+        </div>
+    }
+
+
+</div>
