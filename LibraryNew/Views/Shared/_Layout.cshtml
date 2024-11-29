@@ -37,14 +37,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="PublicIndex">Public_Library</a>
                         </li>
-                        @{
-                            if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Review">Library_Review</a>
-                                </li>
-                            }
-                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Review">Library_Review</a>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

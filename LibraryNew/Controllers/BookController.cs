@@ -1,6 +1,7 @@
 ﻿using LibraryNew.Data;
 using LibraryNew.Models;
 using LibraryNew.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace LibraryNew.Controllers
 {
-    public class BookController : BaseController
+    public class BookController : Controller
     {
         private LibraryDbContext _context;
 
@@ -32,6 +33,7 @@ namespace LibraryNew.Controllers
             return View(publicBooks);
         }
 
+        [Authorize(Roles ="Admin")]
         public IActionResult Review()
         {
             List<Book> books = _context.Books.ToList();
