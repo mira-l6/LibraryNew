@@ -59,6 +59,24 @@ nav a:hover::after {
     animation: fadeIn 1s ease-out forwards; 
 }
 
+.content-section {
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: fadeInFromTheLeft 0.5s ease-in forwards;
+}
+
+/*.image-container {
+    opacity: 0;
+    transform: translateX(20px);
+    animation: fadeInFromTheRight 1.5s ease-out forwards;
+}*/
+
+.book-decor {
+    opacity: 0;
+    transform: translateX(20px);
+    animation: fadeInFromTheRight 0.5s ease-in forwards;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -68,5 +86,29 @@ nav a:hover::after {
     100% {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes fadeInFromTheLeft{
+    0%{
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInFromTheRight{
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
