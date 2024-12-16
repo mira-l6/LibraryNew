@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace LibraryNew.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class CategoryController : BaseController
+    public class CategoryController : Controller
     {
         public readonly LibraryDbContext _context;
         public CategoryController(LibraryDbContext context)

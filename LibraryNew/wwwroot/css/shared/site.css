@@ -59,22 +59,19 @@ nav a:hover::after {
     animation: fadeIn 1s ease-out forwards; 
 }
 
-.content-section {
+.flip-card {
     opacity: 0;
-    transform: translateX(-20px);
-    animation: fadeInFromTheLeft 0.5s ease-in forwards;
+    transform: translateY(20px);
+    animation: fadeIn 1s ease-out forwards;
 }
 
-/*.image-container {
-    opacity: 0;
-    transform: translateX(20px);
-    animation: fadeInFromTheRight 1.5s ease-out forwards;
-}*/
-
-.book-decor {
-    opacity: 0;
-    transform: translateX(20px);
-    animation: fadeInFromTheRight 0.5s ease-in forwards;
+@keyframes fadeInCenter{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
 }
 
 @keyframes fadeIn {

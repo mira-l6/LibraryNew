@@ -3,10 +3,12 @@ using LibraryNew.Models;
 using LibraryNew.Data;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryNew.Controllers
 {
-    public class AuthorController : BaseController
+    [Authorize(Roles = "Admin")]
+    public class AuthorController : Controller
     {
         private readonly LibraryDbContext _context;
         public AuthorController(LibraryDbContext db) { 

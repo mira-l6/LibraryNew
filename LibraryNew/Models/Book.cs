@@ -35,6 +35,9 @@ namespace LibraryNew.Models
         [DisplayName("Private or public choice")]
         public bool IsPublic { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
+        public string ApprovalStatus { get; set; }
+
         [Required(ErrorMessage ="Pages are required")]
         public int? Pages { get; set; }
 

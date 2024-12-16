@@ -36,12 +36,12 @@
                     <div class="left-quotemark-container">
                         <i class="material-icons quote-mark">format_quote</i>
                     </div>
-                    <h5>This is the quote of the day and it should have a certain value for max chars allowed.</h5>
+                    <h5 class="quote-text"></h5>
                     <div class="right-quotemark-container">
                         <i class="material-icons quote-mark">format_quote</i>
                     </div>
                     <div class="quote-author">
-                        <h6>Author LastName</h6>
+                        <h6 class="quote-author"></h6>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,10 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script>
+        document.querySelector('.quote-text').textContent = sessionStorage.getItem('quote');
+        document.querySelector('.quote-author').textContent = sessionStorage.getItem('quote-author');
+    </script>
 </body>
 
 

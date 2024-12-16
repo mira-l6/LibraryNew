@@ -21,15 +21,24 @@ namespace LibraryNew.Controllers
             _environment = hostingEnvironment;
         }
 
+        [Authorize(Roles ="User, Admin")]
         public IActionResult Index()
         {
-            List<Book> books = _context.Books.Where(b => !b.IsPublic).ToList();
+            List<Book> books = _context.Books.Include(b => b.BookAuthors).Where(b => !b.IsPublic).ToList();
+            foreach(var book in books)
+            {
+                foreach (var ba in book.BookAuthors)
+                {
+                    ba.Author = _context.Authors.FirstOrDefault(a => a.Id == ba.AuthorId);
+                }
+            }
+
             return View(books);
         }
 
         public IActionResult PublicIndex()
         {
-            List<Book> publicBooks = _context.Books.Where(b => b.IsPublic).ToList();
+            List<Book> publicBooks = _context.Books.Where(b => b.IsPublic && b.ApprovalStatus == "Approved").ToList();
             return View(publicBooks);
         }
 
@@ -72,7 +81,10 @@ namespace LibraryNew.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(BookVM model)
         {
-            if(!ModelState.IsValid)
+
+            ModelState.Remove("book.ApprovalStatus");
+
+            if (!ModelState.IsValid)
             {
                 model.categories = _context.Categories.Select(c =>
                 new SelectListItem
@@ -89,6 +101,7 @@ namespace LibraryNew.Controllers
                     }).ToList();
                 return View(model);
             }
+
 
 
             List<Author> authorList = new List<Author>();
@@ -115,8 +128,9 @@ namespace LibraryNew.Controllers
                 BookAuthors = bookAuthors,
                 PdfFilePath = await GetFilePath("Pdf", model.FilePDF),
                 ImagePath = await GetFilePath("Img", model.FileIMG),
+                ApprovalStatus = "Pending"
             };
-
+            
             _context.Books.Add(book);
             _context.SaveChanges();
             return RedirectToAction("Index");

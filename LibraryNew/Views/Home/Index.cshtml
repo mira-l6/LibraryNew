@@ -9,8 +9,32 @@
 </head>
 <div class="greeting-body">
     <div class="greeting-text w-100">
-        <h1 class="text-center">@ViewBag.Greeting ivan ivanov!</h1>
+        @{
+            if(User.Identity.IsAuthenticated){
+                <h1 class="text-center">@ViewBag.Greeting, @User.Identity.Name!</h1>
+            }
+            else
+            {
+                <h1 class="non-user-greeting">Would you like to join our Interactive Library <i class="material-icons">play_arrow</i></h1>
+                <div class="flip-card">
+                    <div class="flip-card-base">
+                        <a asp-area="Identity" asp-page="/Account/Register">
+                            <i class="material-icons">person</i>
+                        </a>
+                    </div>
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <i class="material-icons">book</i>
+                        </div>
+                        <div class="flip-card-back">
+                            <i class="material-icons">book</i>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
+
     <div class="chatbot-activeSpace">
         <div class="chatbot-title d-flex flex-row">
             <p>ChatBot Library Helper</p>
@@ -37,19 +61,19 @@
             <section>
                 <div class="filter-box">
                     <div class="filter-option">
-                        <a href="">Books_Library</a>
+                        <a asp-controller="Book" asp-action="Index">Books_Library</a>
                     </div>
                     <div class="line-break">
                         <div></div>
                     </div>
                     <div class="filter-option">
-                        <a href="">Authors_Archive</a>
+                        <a asp-controller="Author" asp-action="Index">Authors_Archive</a>
                     </div>
                     <div class="line-break">
                         <div></div>
                     </div>
                     <div class="filter-option">
-                        <a href="">Public_Library</a>
+                        <a asp-controller="Book" asp-action="PublicIndex">Public_Library</a>
                     </div>
                     <div class="line-break">
                         <div></div>
@@ -66,11 +90,16 @@
     </section>
 </div>
 <div class="quote-body">
-    <q>This will be the quote of the day</q>
-    <p>-Author/Person</p>
+    <div class="quote-framer">
+        <div class="quote-mark-container"><img src="~/publicImages/quoteMark.jpg" alt="QuoteMark image" /></div>
+        <p class="quote-text"></p>
+        <p class="quote-info"><span class="quote-author">   <em></span><span class="quote-resource"></span></em> </p>
+        <div class="quote-mark-container quote-second"><img src="~/publicImages/quoteMark.jpg" alt="QuoteMark image" /></div>
+    </div>
 </div>
 
-z<script src="/js/partialViews/chatbotView.js" defer type="text/javascript"></script>
+<script src="/js/partialViews/chatbotView.js" defer type="text/javascript"></script>
+<script src="/js/partialViews/quoteView.js"></script>
 
 
 @* <h2>Текущото време е:

@@ -11,6 +11,8 @@ namespace LibraryNew
     {
         public static async Task Main(string[] args)
         {
+
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -25,16 +27,16 @@ namespace LibraryNew
             builder.Services.AddControllersWithViews();
 
 
-            var apiKey = builder.Configuration["ApiKey"];
-            var apiModel = "llama-3.1-70b-versatile";
+            //var apiKey = builder.Configuration["ApiKey"];
+            //var apiModel = "llama-3.1-70b-versatile";
 
-            builder.Services.AddSingleton<IGroqClient>(gc =>
-            new GroqClient(apiKey, apiModel)
-            .SetTemperature(0.5)
-            .SetMaxTokens(512)
-            .SetTopP(1)
-            .SetStop("NONE")
-            .SetStructuredRetryPolicy(5));
+            //builder.Services.AddSingleton<IGroqClient>(gc =>
+            //new GroqClient(apiKey, apiModel)
+            //.SetTemperature(0.5)
+            //.SetMaxTokens(512)
+            //.SetTopP(1)
+            //.SetStop("NONE")
+            //.SetStructuredRetryPolicy(5));
 
 
             builder.Services.AddSingleton<ITimeNow,TimeService>();

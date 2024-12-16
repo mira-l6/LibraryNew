@@ -1,7 +1,9 @@
-﻿namespace LibraryNew.Services
+﻿using LibraryNew.Models;
+
+namespace LibraryNew.Services
 {
     public interface IQuoteGenerate
     {
-        string GetRandomQuote();
+        Task<QuoteSet> GetRandomQuote(IQueryable<QuoteSet> quotes);
     }
 }

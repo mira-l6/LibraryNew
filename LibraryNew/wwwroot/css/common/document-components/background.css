@@ -36,7 +36,7 @@
 .chatbot-activeSpace {
     display: block !important;
     /*width: 95% !important;*/
-    height: 17em;
+/*    height: 17em;*/
     border-bottom: none !important;
     background: var(--secondary-grey-color) !important;
 }
@@ -48,7 +48,7 @@
 }
 
 .chatbot-textSpace{
-    height: 10em;
+/*    height: 10em;*/
 }
 
 #cb-initial-input {

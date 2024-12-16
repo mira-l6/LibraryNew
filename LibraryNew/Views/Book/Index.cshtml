@@ -13,6 +13,7 @@
 }
 
 <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="~/css/common/document-components/background.css" />
     <link rel="stylesheet" href="~/css/common/variables/components.css" />
     <link rel="stylesheet" href="~/css/shared/site.css" />
@@ -29,39 +30,104 @@
 
         <div class="book-display d-flex flex-wrap justify-content-around">
 
-            <div class="sort-filter-space d-flex justify-content-around">
-                <div class="sort-space d-flex flex-row">
-                    <input type="type" name="name" value="" />
-                    <p><a asp-action="Create">Create New</a></p>
-                    <button id="hideOrShowStaticFeatures" class="d-flex justify-content-center align-items-center staticShow-Hide"><i class="material-icons">arrow_drop_up</i></button>
-
+            <div class="sort-filter-space d-flex">
+                <div class="sort-space">
+                    <form action="/" method="get">
+                        <input type="text" name="name" placeholder="Search..." />
+                        <div class="sort-filter-buttons">
+                            <button class="d-flex justify-content-center align-items-center">Sort<i class="material-icons ps-2">list</i></button>
+                            <button class="d-flex justify-content-center align-items-center">Filter<i class="material-icons ps-2">filter_list</i></button>
+                        </div>
+                    </form>
                 </div>
+                <p class="create-partial-button"><a asp-action="Create"><i class="material-icons">add</i></a></p>
             </div>
-            
+
             <div class="bookshelf-display">
 
+                <div class="bookshelf">
                 @foreach (var item in Model)
-                {
-                    <div class="card m-2" style="width: 18rem; max-height: 33rem">
-                        <img class="card-img-top h-50" style="object-fit: cover" src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title) (@Html.DisplayFor(modelItem => item.PublishingYear)) </h5>
-                            <p class="card-text">@TrimDescr(item.Description, 100)</p>
+                    {
+                    //single book
+                        <div class="book">
+                            <div class="book-image"><img src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Book cover"/></div>
+                            <div class="book-info">
+                                <div class="book-main-info">
+                                    <p class="book-title">@Html.DisplayFor(model => item.Title)</p>
 
-                            <p class="card-text">
-                                <strong>Rating:</strong> @Html.DisplayFor(modelItem => item.Rating) / 10
-                            </p>
-                            <p class="card-text">
-                                <strong>Review:</strong> @Html.DisplayFor(modelItem => item.Review)
-                            </p>
-                            <p class="card-text">
-                                <strong>Publicity:</strong> @Html.DisplayFor(modelItem => item.IsPublic)
-                            </p>
+                                    @if(item.BookAuthors.ToList().Count > 0 && item.BookAuthors != null){
 
-                            <a asp-action="Details" asp-controller="Book" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                                        for(int i = 0; i < item.BookAuthors.ToList().Count; i++){
+
+                                            <p class="book-author">@Html.DisplayFor(model => item.BookAuthors.ToList()[i].Author.FirstName)
+                                                @Html.DisplayFor(model => item.BookAuthors.ToList()[i].Author.LastName)</p>
+                                        }
+                                    } 
+                                     <p>--------------------</p>    
+                                </div>
+
+                                <button class="book-details-btn"><a asp-controller="Book" asp-route-id="@item.Id" asp-action="Details">Details</a></button>
+
+                                <div class="book-sub-info">
+                                    @if (item.Rating > 0) {
+                                        <p class="book-rating">
+                                        @for (int i = 0; i < (item.Rating); i++){
+                                            <i class="material-icons">star</i>
+                                        }
+                                        </p>
+                                        <p>/10</p>
+                                    }
+                                </div>
                         </div>
                     </div>
                 }
+                    <div class="plant-decor">
+                        <img src="~/publicImages/small-plant.png"/>
+                    </div>
+                </div>
+                <div class="bookshelf">
+                    <div class="plant-decor">
+                        <img src="~/publicImages/small-plant.png"/>
+                    </div>
+                    @foreach (var item in Model)
+                    {
+                    //single book
+                        <div class="book">
+                            <div class="book-image"><img src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Book cover"/></div>
+                            <div class="book-info">
+                                <div class="book-main-info">
+                                    <p class="book-title">@Html.DisplayFor(model => item.Title)</p>
+
+                                    @if(item.BookAuthors.ToList().Count > 0 && item.BookAuthors != null){
+
+                                        for(int i = 0; i < item.BookAuthors.ToList().Count; i++){
+
+                                            <p class="book-author">@Html.DisplayFor(model => item.BookAuthors.ToList()[i].Author.FirstName)
+                                                @Html.DisplayFor(model => item.BookAuthors.ToList()[i].Author.LastName)</p>
+                                        }
+                                    } 
+                                     <p>--------------------</p>    
+                                </div>
+
+                                <button class="book-details-btn"><a asp-controller="Book" asp-route-id="@item.Id" asp-action="Details">Details</a></button>
+
+                                <div class="book-sub-info">
+                                    @if (item.Rating > 0) {
+                                        <p class="book-rating">
+                                        @for (int i = 0; i < (item.Rating); i++){
+                                            <i class="material-icons">star</i>
+                                        }
+                                        </p>
+                                        <p>/10</p>
+                                    }
+                                </div>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+            <div class="pagination-container">
+                <div>1...10</div>
             </div>
         </div>
 
@@ -72,17 +138,18 @@
                     <div class="left-quotemark-container">
                         <i class="material-icons quote-mark">format_quote</i>
                     </div>
-                    <h5>This is the quote of the day and it should have a certain value for max chars allowed.</h5>
+                    <h5 class="quote-text"></h5>
                     <div class="right-quotemark-container">
                         <i class="material-icons quote-mark">format_quote</i>
                     </div>
                     <div class="quote-author">
-                        <h6>Author LastName</h6>
+                        <h6 class="quote-author"></h6>
                     </div>
                 </div>
             </div>
 
             <button class="static-redirect-publicLB"><a asp-controller="Book" asp-action="PublicIndex">Check out the public library -></a></button>
+            <button id="hideOrShowStaticFeatures" class="d-flex justify-content-center align-items-center staticShow-Hide"><i class="material-icons">arrow_drop_up</i></button>
 
             <div class="chatbot-activeSpace">
                 <div class="chatbot-title d-flex flex-row">
@@ -107,5 +174,29 @@
     </div>
 
     <script src="~/js/views/booksIndex.js"></script>
+    <script>
+        document.querySelector('.quote-text').textContent = sessionStorage.getItem('quote');
+        document.querySelector('.quote-author').textContent = sessionStorage.getItem('quote-author');
+    </script>
 </body>
 
+
+
+@* <div class="book m-2" style="width: 18rem; max-height: 33rem">
+                        <img class="h-50" style="object-fit: cover" src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Card image cap">
+                        <div class="">
+                            <h5 class="">@Html.DisplayFor(modelItem => item.Title) (@Html.DisplayFor(modelItem => item.PublishingYear)) </h5>
+                         <p class="card-text">@TrimDescr(item.Description, 100)</p> 
+
+                            <p class="">
+                                <strong>Rating:</strong> @Html.DisplayFor(modelItem => item.Rating) / 10
+                            </p>                           <p class="card-text">
+                                <strong>Review:</strong> @Html.DisplayFor(modelItem => item.Review)
+                            </p> 
+                            <p class="card">
+                                <strong>Publicity:</strong> @Html.DisplayFor(modelItem => item.IsPublic)
+                            </p>
+
+                            <a asp-action="Details" asp-controller="Book" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                        </div>
+                    </div> *@

@@ -1,60 +1,53 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LibraryNew.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Logging;
 
 namespace LibraryNew.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class AdminController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-
-        public AdminController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager) 
+        private readonly LibraryDbContext _context;
+        public AdminController(LibraryDbContext context)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-        }
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-
-        public IActionResult ManageUsers()
-        {
-            var users = _userManager.Users.ToList();
-            return View(users);
-        }
-        public IActionResult ManageRoles()
-        {
-            var roles = _roleManager.Roles.ToList();
-            return View(roles);
+            _context = context;
         }
 
         [HttpGet]
-        public IActionResult CreateRole()
+        public IActionResult PendingBooks()
         {
-            return View();
+            var books = _context.Books.Where(b => b.ApprovalStatus == "Pending" && b.IsPublic).ToList();
+            return View(books);
         }
 
         [HttpPost]
-
-        public async Task<IActionResult> CreateRole(string roleName)
+        public IActionResult ApproveBook(int Id)
         {
-            if (!string.IsNullOrEmpty(roleName))
+            var book = _context.Books.Find(Id);
+            
+            if(book != null)
             {
-                var role = new IdentityRole(roleName);
-                var result = await _roleManager.CreateAsync(role);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ManageRoles");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                book.ApprovalStatus = "Approved";
+                _context.SaveChanges();
             }
-            return View();
+
+            return RedirectToAction("PendingBooks");
+        }
+
+        [HttpPost]
+        public IActionResult RejectBook(int Id)
+        {
+            var book = _context.Books.Find(Id);
+
+            if (book != null)
+            {
+                book.ApprovalStatus = "Rejected";
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("PendingBooks");
         }
 
     }

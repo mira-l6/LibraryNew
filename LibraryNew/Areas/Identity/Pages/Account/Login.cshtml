@@ -9,15 +9,36 @@
 <head>
     <link rel="stylesheet" href="~/css/shared/sign-upin.css"/>
     <link rel="stylesheet" href="~/css/pages/home.css"/>
+    @* <link rel="stylesheet" href="~/css/common/document-components/background.css"/> *@
 </head>
 <body>
 
     <div class="greeting-body">
 
+        <div class="main-title"><h2>Start Journaling</h2></div> 
+
         <div class="main-section">
 
-            <div class="heading-section">
-                <h4>You don't have an account?'</h4>
+            <div class="quote-space">
+                <div class="ivy-decor">
+                    <div class="ivy-img-decor">
+                        <img src="~/publicImages/ivy.png" alt="Ivy plant decor" />
+                    </div>
+                </div>
+                <div class="quote-outer d-flex justify-content-center align-items-center">
+                    <div class="quote-text-space">
+                        <div class="left-quotemark-container">
+                            <i class="material-icons quote-mark">format_quote</i>
+                        </div>
+                        <h5 class="quote-text"></h5>
+                        <div class="right-quotemark-container">
+                            <i class="material-icons quote-mark">format_quote</i>
+                        </div>
+                        <div class="quote-author">
+                            <h6 class="quote-author"></h6>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="content-section">
@@ -36,13 +57,11 @@
                             <hr />
                             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                             <div class="form-floating mb-3">
-                                <div class="label-divider"><div></div></div>
                                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                                 <label asp-for="Input.Email" class="form-label">Email</label>
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                             </div>
                             <div class="form-floating mb-3">
-                                <div class="label-divider"><div></div></div>
                                 <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
                                 <label asp-for="Input.Password" class="form-label">Password</label>
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
@@ -80,15 +99,17 @@
                                 <label asp-for="Input.Email" class="form-label">Email</label>
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                             </div>
-                            <div class="form-floating mb-3">
-                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                                <label asp-for="Input.Password" class="form-label">Password</label>
-                                <span asp-validation-for="Input.Password" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                                <label asp-for="Input.Password" class="form-label">Repeat-pass</label>
-                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-6 form-floating mb-3">
+                                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                    <label asp-for="Input.Password" class="form-label">Password</label>
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+                                <div class="col-6 form-floating mb-3">
+                                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                    <label asp-for="Input.Password" class="form-label">Repeat-pass</label>
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
                             </div>
                             <div class="checkbox mb-3">
                                 <label asp-for="Input.RememberMe" class="form-label">
@@ -127,15 +148,19 @@
                 </div>
             </div>
 
-            <div class="book-decor">
+@*             <div class="book-decor">
                 <div class="image-container">
                     <img src="~/publicImages/bookRow-removebg-preview.png"/>
                 </div>
-            </div>
+            </div> *@
         </div>
     </div>
 
     <script src="/js/views/loginRegsiterView.js" type="module"></script>
+    <script>
+        document.querySelector('.quote-text').textContent = sessionStorage.getItem('quote');
+        document.querySelector('.quote-author').textContent = sessionStorage.getItem('quote-author');
+    </script>
 </body>
 
 @section Scripts {

@@ -40,7 +40,7 @@
     margin: 1em 1em 1em 0;
     background-color: rgba(255,255,255, 0.9);
     border-radius: 5px;
-    border-bottom: 5px solid var(--primary-darkBrown-color);
+    border-bottom: 5px solid var(--prifmary-darkBrown-color);
 }
 .chatbot-title{
     background: white;

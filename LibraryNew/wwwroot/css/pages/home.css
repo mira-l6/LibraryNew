@@ -4,6 +4,7 @@
     overflow: hidden !important;
     /*font-family: initial;*/
 }
+
 .navbar {
     margin-bottom: 0 !important;
 }
@@ -14,11 +15,13 @@
 }
 
 .greeting-body {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/publicImages/library.png);
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/publicImages/library.png);
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-direction: row;
     gap: 6.9em;
     color: white;
     width: 100vw;
@@ -26,21 +29,216 @@
     padding: 0;
 }
 
+.greeting-text{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+}
+
+.non-user-greeting i {
+    margin-top: 10px;
+    height: 100%;
+    font-size: 1em;
+    color: rgba(255,255,255, 0.7);
+    animation: bounce 1.5s ease-in-out infinite;
+}
+.non-user-greeting {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4em;
+    flex-direction: row;
+}
+
 .quote-body {
     width: 100vw;
     text-align: center;
-    padding: 2em 0em 2em 0em;
+    height: calc(100vh - 116.73px - 312px - 56.8px);
     font-size: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 }
+
+.quote-framer {
+    border: 8px solid var(--primary-darkBrown-color );
+    width: 95%;
+    height: 80%;
+    border-radius: 5px;
+    padding: 1em 2em 1em 2em;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    /*    align-items: center;*/
+    flex-direction: column;
+    position: relative;
+}
+
+.quote-mark-container {
+    width: 4.5em;
+    height: 4.5em;
+    position: absolute;
+    padding: 1em;
+}
+
+    .quote-mark-container:first-child {
+        left: 14px;
+        top: -50px;
+    }
+
+.quote-second {
+    right: 0%;
+    top: 95px;
+}
+
+.quote-mark-container img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.quote-text{
+    font-weight: 600;
+    font-size: 0.85em;
+}
+.quote-info{
+    font-size: 0.7em;
+}
+.quote-info .quote-resource{
+    
+}
+
+
 .chatbot-activeSpace {
     display: none;
     width: 40%;
     height: 80%;
 }
+
 .cb-initial-question:hover input {
     background-color: white !important;
 }
 
 .chatbot-textSpace {
     height: 13em;
+}
+
+@media(max-width: 1300px) {
+    .quote-second {
+        top: 60%;
+    }
+}
+
+@media (max-width: 1000px) {
+    body {
+        overflow-y: scroll !important;
+    }
+
+    .quote-body {
+        height: auto;
+        margin-top: 2em;
+    }
+
+    .quote-second {
+        top: 67%;
+    }
+}
+
+
+/*outside resource*/
+.flip-card, .flip-card-back, .flip-card-front, .flip-card-inner, .flip-card-front i, .flip-card-back i {
+    border-radius: 5px;
+}
+
+.flip-card {
+    background-color: var(--primary-darkBrown-color);
+    width: 3em;
+    height: 3em;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.flip-card:hover .flip-card-inner {
+    transform-origin: 100% 0;
+    transform: rotateY(180deg);
+}
+
+.flip-card-base{
+    display: none;
+}
+.flip-card-base a{
+    height: 100%;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+.flip-card-base i{
+    width: 100%;
+    font-size: 2em;
+}
+
+.flip-card:hover .flip-card-base {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    border: 2px solid rgba(0,0,0, 0.6);
+}
+.flip-card:hover .flip-card-front, .flip-card:hover .flip-card-back{
+    top: -100%;
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-darkBrow-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*    padding: 1em;*/
+    /*    top: -60%;*/
+    backface-visibility: hidden;
+}
+
+.flip-card-front {
+    background-color: #bbb;
+    color: black;
+}
+
+.flip-card-back {
+    color: white;
+    transform: rotateY(180deg);
+}
+.flip-card-front i, .flip-card-back i{
+/*    color: var(--primary-darkBrown-color);*/
+    color: black;
+    background: var(--secondary-grey-color);
+    padding: 0.25em;
+    font-size: 2em;
+    border: 2px solid rgba(0,0,0, 0.6);
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0); /* No vertical movement at the start and end */
+    }
+
+    50% {
+        transform: translateY(-2px); /* Move up slightly */
+    }
 }

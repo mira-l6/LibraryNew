@@ -1,0 +1,35 @@
+﻿@model IEnumerable<LibraryNew.Models.Book>
+@{
+}
+
+<head></head>
+<body>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Pages</th>
+            <th>Disapprove</th>
+            <th>Approve</th>
+        </tr>
+        @foreach(var item in Model){
+
+            <tr>
+                <th>@Html.DisplayFor(model => item.Title)</th>
+                <th>@Html.DisplayFor(model => item.Pages)</th>
+                <th>
+                    <form asp-action="RejectBook" method="post">
+                        <input type="hidden" name="id" value="@item.Id"/>
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    </form>
+                </th>
+                <th>
+                    <form asp-action="ApproveBook" method="post">
+                        <input type="hidden" name="id" value="@item.Id"/>
+                        <button type="submit" class="btn btn-success">Approve</button>
+
+                    </form>
+                </th>
+            </tr>
+        }
+    </table>
+</body>
