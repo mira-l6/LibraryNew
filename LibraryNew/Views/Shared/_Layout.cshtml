@@ -31,17 +31,17 @@
                         @{if(User.IsInRole("Admin")){
 
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="Index">Author_Archive</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Author" asp-action="Index">Authors</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Genres</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Review">Library_Review</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="Review">Analysis</a>
                                 </li>
                         }}
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="PublicIndex">Public_Library</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Book" asp-action="PublicIndex">Public Library</a>
                         </li>
                     @{
                         if(User.IsInRole("Admin")){

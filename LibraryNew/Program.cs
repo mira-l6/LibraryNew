@@ -4,6 +4,7 @@ using LibraryNew.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing.Text;
+using LibraryNew.Services;
 
 namespace LibraryNew
 {
@@ -14,6 +15,9 @@ namespace LibraryNew
 
 
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -42,12 +46,18 @@ namespace LibraryNew
             builder.Services.AddSingleton<ITimeNow,TimeService>();
             builder.Services.AddSingleton<IGreeting, Greeting>();
             builder.Services.AddSingleton<IQuoteGenerate, QuoteGenerate>();
-           // builder.Services.AddScoped;
-           // builder.Services.AddTransient
 
-            
+            builder.Services.AddHttpClient<GeminiService>();
+
+            // builder.Services.AddScoped;
+            // builder.Services.AddTransient
+
+
 
             var app = builder.Build();
+
+            // Enable Developer Exception Page temporarily
+            app.UseDeveloperExceptionPage();
 
 
             // Configure the HTTP request pipeline.

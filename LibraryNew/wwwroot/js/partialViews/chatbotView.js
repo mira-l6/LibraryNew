@@ -1,6 +1,8 @@
 let chatbotContainer = document.querySelector('.chatbot-activeSpace');
 let chatbotButton = document.querySelector('.cb-renderBtn');
 
+alert('hehheheeh')
+
 chatbotButton.addEventListener('click', renderChatbot);
 function renderChatbot(e) {
 
@@ -14,6 +16,8 @@ function renderChatbot(e) {
         if (chatbotContainer.style.display !== 'block') { chatbotContainer.style.display = 'block'; }
 
         chatbotContainer.querySelector('.response-avatar p').textContent = question;
+
+        console.log(question)
 
         fetchAnswerFromServer(question);
 
@@ -36,6 +40,8 @@ function handleHideChatbot(e) {
 
 function fetchAnswerFromServer(question) {
 
+    console.log(question)
+
     fetch('/ChatBot', {
         method: 'POST',
         body: JSON.stringify({ question }),
@@ -54,5 +60,5 @@ function fetchAnswerFromServer(question) {
             const responseElement = document.querySelector('.response-text');
             responseElement.innerHTML = chatAnswer;  // Use the response field
         })
-        .catch(err => console.error('Fetch error:', err));
+        .catch(err => throw new Error(err);
 }

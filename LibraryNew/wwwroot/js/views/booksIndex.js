@@ -4,7 +4,7 @@ const booksDisplay = document.querySelector('.book-display');
 const bookShelfDisplay = document.querySelector('.bookshelf-display');
 
 const hideShowButton = document.querySelector('#hideOrShowStaticFeatures');
-hideShowButton.addEventListener('click', showOrHideStaticFeatures)
+//hideShowButton.addEventListener('click', showOrHideStaticFeatures)
 
 function showOrHideStaticFeatures(e) {
 

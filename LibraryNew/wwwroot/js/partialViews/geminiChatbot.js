@@ -1,0 +1,47 @@
+﻿//const {
+//    GoogleGenerativeAI,
+//    HarmCategory,
+//    HarmBlockThreshold,
+//} = require("@google/generative-ai");
+
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+
+const apiKey = "AIzaSyBJiqFcFvi8YQ6cssyTuC9taXckvreJAgM";
+const genAI = new GoogleGenerativeAI(apiKey);
+
+const model = genAI.getGenerativeModel({
+    model: "gemini-2.0-flash-exp",
+});
+
+const generationConfig = {
+    temperature: 1,
+    topP: 0.95,
+    topK: 40,
+    maxOutputTokens: 8192,
+    responseMimeType: "text/plain",
+};
+
+async function run() {
+    const chatSession = model.startChat({
+        generationConfig,
+        history: [
+            {
+                role: "user",
+                parts: [
+                    { text: "how do i build a chatbot in asp net using gemini\n" },
+                ],
+            },
+            {
+                role: "model",
+                parts: [
+                    { text: "Okay, let's break down how to build a chatbot in ASP.NET using Google's Gemini models. This will involve a few key parts:\n\n**1. Setting up Your ASP.NET Project**\n\n   * **Create a New Project:** In Visual Studio (or your preferred .NET IDE), create a new \"ASP.NET Core Web App\" project. Choose either Model-View-Controller (MVC) or Razor Pages as your template, depending on your preference. For a simple chatbot, Razor Pages might be a quicker starting point.\n   * **NuGet Package:** You'll need the official Google Cloud AI .NET client library. Open the NuGet Package Manager and install:\n     ```\n     Google.Cloud.AI.Generative.V1\n     ```\n\n**2. Getting API Credentials**\n\n   * **Google Cloud Project:** You'll need a Google Cloud Project. If you don't have one, create one at [https://console.cloud.google.com/](https://console.cloud.google.com/).\n   * **Enable the Gemini API:** Go to the API library in your project, search for \"Generative Language API,\" and enable it.\n   * **Service Account:** It's best practice to use a service account for API access. Create a service account in the \"IAM & Admin\" section of your Google Cloud Project. Download the JSON key file for this service account. *Keep this file secure!*\n\n**3. Setting Up the API Client**\n\n   * **Configuration:** In your ASP.NET project (e.g., `appsettings.json`), store the path to your service account key file:\n     ```json\n     {\n       \"Logging\": {\n         \"LogLevel\": {\n           \"Default\": \"Information\",\n           \"Microsoft.AspNetCore\": \"Warning\"\n         }\n       },\n       \"AllowedHosts\": \"*\",\n       \"GeminiServiceAccountKeyPath\": \"/path/to/your/service_account_key.json\"\n     }\n     ```\n   * **Client Initialization:**  Create a service class that will handle API interactions. Here's a simple example. In a folder (e.g., `Services`), create a file called `GeminiService.cs`:\n\n     ```csharp\n     using Google.Cloud.AI.Generative.V1;\n     using Microsoft.Extensions.Configuration;\n\n     public class GeminiService\n     {\n         private readonly GenerativeServiceClient _client;\n\n         public GeminiService(IConfiguration configuration)\n         {\n             var keyPath = configuration[\"GeminiServiceAccountKeyPath\"];\n             var credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromFile(keyPath);\n             _client = new GenerativeServiceClientBuilder { Credentials = credential }.Build();\n         }\n\n         public async Task<string> GenerateResponse(string prompt)\n         {\n             var request = new GenerateContentRequest\n             {\n                 Model = \"models/gemini-pro\",  // Choose your model (e.g., gemini-pro, gemini-pro-vision, etc.)\n                 Contents = { new Content { Parts = { new Part { Text = prompt } } } }\n             };\n\n             var response = await _client.GenerateContentAsync(request);\n\n             if (response.Candidates.Count > 0 && response.Candidates[0].Content.Parts.Count > 0)\n             {\n                  return response.Candidates[0].Content.Parts[0].Text;\n             }\n\n             return \"I'm sorry, I couldn't generate a response.\";\n         }\n     }\n     ```\n   * **Register the Service:** In your `Program.cs`, register the `GeminiService` as a singleton:\n     ```csharp\n     builder.Services.AddSingleton<GeminiService>();\n     ```\n\n**4. Creating the Chatbot Interface (Razor Pages Example)**\n\n   * **Razor Page:** In your Razor Pages folder (e.g., `Pages`), create a new Razor Page named `Chat.cshtml` and `Chat.cshtml.cs`.\n   * **`Chat.cshtml.cs` (Code-behind):**\n     ```csharp\n     using Microsoft.AspNetCore.Mvc;\n     using Microsoft.AspNetCore.Mvc.RazorPages;\n     using System.Threading.Tasks;\n     using System.Collections.Generic;\n\n     public class ChatModel : PageModel\n     {\n         private readonly GeminiService _geminiService;\n\n         public ChatModel(GeminiService geminiService)\n         {\n             _geminiService = geminiService;\n         }\n         [BindProperty]\n         public string UserMessage { get; set; }\n         public List<KeyValuePair<string, string>> ChatHistory { get; set; } = new List<KeyValuePair<string, string>>();\n\n         public async Task<IActionResult> OnPostAsync()\n         {\n             if (!string.IsNullOrWhiteSpace(UserMessage))\n             {\n                 string aiResponse = await _geminiService.GenerateResponse(UserMessage);\n                 ChatHistory.Add(new KeyValuePair<string, string>(\"User\", UserMessage));\n                 ChatHistory.Add(new KeyValuePair<string, string>(\"Gemini\", aiResponse));\n                 UserMessage = null; //clear the message\n             }\n\n            return Page();\n         }\n     }\n     ```\n   * **`Chat.cshtml` (View):**\n     ```html\n     @page\n     @model ChatModel\n     @{\n         ViewData[\"Title\"] = \"Gemini Chatbot\";\n     }\n\n     <h1>Gemini Chatbot</h1>\n\n    <div class=\"chat-container\">\n         @if (Model.ChatHistory != null)\n         {\n              @foreach (var message in Model.ChatHistory)\n              {\n                  <div class=\"message @(message.Key == \"User\" ? \"user-message\" : \"gemini-message\")\">\n                        <p class=\"sender\">@message.Key: </p>\n                        <p class=\"text\">@message.Value</p>\n                 </div>\n              }\n         }\n    </div>\n\n    <form method=\"post\">\n          <input type=\"text\" asp-for=\"UserMessage\" placeholder=\"Type your message...\" />\n          <button type=\"submit\">Send</button>\n    </form>\n\n      <style>\n          .chat-container {\n                border: 1px solid #ccc;\n                padding: 10px;\n                margin-bottom: 10px;\n                height: 400px; /* You can adjust the height */\n                overflow-y: auto; /* Enable scrolling when content overflows */\n            }\n\n            .message {\n                padding: 5px;\n                margin-bottom: 5px;\n                border-radius: 5px;\n             }\n\n             .user-message{\n                  background-color: #e0f7fa; /* Light blue */\n                  text-align: right;\n              }\n\n            .gemini-message {\n                  background-color: #f0f0f0; /* Light gray */\n                  text-align: left;\n              }\n\n             .sender {\n                  font-weight: bold;\n                  display:inline;\n              }\n\n           .text{\n               display:inline;\n           }\n        </style>\n     ```\n\n**5. Running the Chatbot**\n\n   * Build and run your ASP.NET application.\n   * Navigate to the `Chat` page (e.g., `https://localhost:7000/Chat`).\n   * You should have a basic chatbot interface where you can type messages, and Gemini will generate responses.\n\n**Key Considerations:**\n\n* **Error Handling:** Add robust error handling, especially when dealing with API calls.\n* **Model Selection:** `gemini-pro` is a good general-purpose model. Experiment with other models based on your use case (e.g., `gemini-pro-vision` for image processing).\n* **Rate Limiting:** Be aware of API rate limits.\n* **Security:**  Never expose your service account key or API key directly in your client-side code.\n* **Conversation History:** This basic example doesn't maintain a full conversation history for context. You'll need to implement this if you need more advanced interactions.\n* **UI/UX:** This provides a basic interface. You might want to enhance this with better styling, loading indicators, etc.\n* **Prompt Engineering:** The quality of your chatbot's response heavily depends on how well you craft your prompts. Experiment with different prompt styles.\n\n**Next Steps:**\n\n1. **Add Conversation History:** Store previous user messages and Gemini responses and send them as context with each new prompt.\n2. **Advanced Features:**\n   *  Implement a feature to choose between different Gemini models at runtime.\n   * Explore using function calling for specific tasks.\n   *  Allow for image uploads to work with `gemini-pro-vision`.\n\nThis provides a solid foundation for building an ASP.NET chatbot using Google Gemini. Remember to explore the documentation for the Google Cloud AI .NET client library for more advanced features and options. Good luck!\n" },
+                ],
+            },
+        ],
+    });
+
+    const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
+    console.log(result.response.text());
+}
+
+run();

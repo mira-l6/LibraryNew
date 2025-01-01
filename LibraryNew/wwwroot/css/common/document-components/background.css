@@ -4,13 +4,13 @@
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
-    align-items: center;
+    align-items: end;
     gap: 6.9em;
     color: white;
     width: 100vw;
     margin: 0 !important;
     padding: 0;
-    justify-content: right;
+    justify-content: space-between;
     padding: 1.5em 3em 0.5em 1em;
 }
 
@@ -82,21 +82,22 @@
 }
 
 .quote-space{
-    width: 97%;
+/*    width: 97%;*/
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.2em 1em 1em 1em;
 }
 
 .quote-text-space {
-    padding: 1em;
+    padding: 0.8em;
+    height: 100%;
+    width: 100%;
     border: 5px solid rgba(77,45,24, 0.4);
     border-radius: 5px;
     text-align: center
 }
 .quote-text-space h5{
-    padding: 0 2em 0 2em;
+    padding: 0.1em 0;
 }
 
 .quote-mark{

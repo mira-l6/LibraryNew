@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using static Google.Api.Gax.Grpc.GrpcChannelOptions.CustomOption;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace LibraryNew.Controllers
@@ -22,9 +23,10 @@ namespace LibraryNew.Controllers
         }
 
         [Authorize(Roles ="User, Admin")]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1,string name="", string actionType = "", string sortOption = "", string sortOrder = "", List<string> genreFilter = null, string awardFilter = "", string ratingFilter = "")
         {
-            List<Book> books = _context.Books.Include(b => b.BookAuthors).Where(b => !b.IsPublic).ToList();
+            var books = _context.Books.Include(b => b.BookAuthors).Include(b => b.Category).Where(b => !b.IsPublic).ToList();
+
             foreach(var book in books)
             {
                 foreach (var ba in book.BookAuthors)
@@ -33,7 +35,83 @@ namespace LibraryNew.Controllers
                 }
             }
 
-            return View(books);
+            if (actionType == "find" && !string.IsNullOrEmpty(name))
+            {
+                books = books
+                    .Where(b => b.Title.Contains(name, StringComparison.OrdinalIgnoreCase) ||
+                                b.BookAuthors.Any(a => a.Author.FirstName.Contains(name, StringComparison.OrdinalIgnoreCase)) ||
+                                b.BookAuthors.Any(a => a.Author.LastName.Contains(name, StringComparison.OrdinalIgnoreCase))).ToList();
+            }
+
+            if(actionType == "sort" && !String.IsNullOrEmpty(sortOption))
+            {
+                switch (sortOption)
+                {
+                    case "title":
+                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.Title).ToList() : books.OrderBy(b => b.Title).ToList();
+                        break;
+                    case "author":
+                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.BookAuthors.FirstOrDefault().Author.FirstName).ToList()
+                                                      : books.OrderBy(b => b.BookAuthors.FirstOrDefault().Author.FirstName).ToList();
+                        break;
+                    case "rating":
+                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.Rating).ToList() : books.OrderBy(b => b.Rating).ToList();
+                        break;
+                    case "language":
+                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.Language).ToList() : books.OrderBy(b => b.Language).ToList();
+                        break;
+                    case "pages":
+                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.Pages).ToList() : books.OrderBy(b => b.Pages).ToList();
+                        break;
+                }
+            }
+
+            if(actionType == "filter" && (genreFilter != null || !String.IsNullOrEmpty(awardFilter) || !String.IsNullOrEmpty(ratingFilter)))
+            {
+
+                if(genreFilter != null && genreFilter.Any())
+                {
+                    books = books.Where(b => b.Category != null && genreFilter.Contains(b.Category.Genre)).ToList();
+                }
+
+                if (!String.IsNullOrEmpty(awardFilter))
+                {
+                    if(awardFilter == "awarded")
+                    {
+                        books = books.Where(b => b.BookAward).ToList();
+                    }
+                    else if(awardFilter == "not-awarded")
+                    {
+                        books = books.Where(b => b.BookAward == false).ToList();
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(ratingFilter))
+                {
+                    if(ratingFilter == "positive")
+                    {
+                        books = books.Where(b => b.Rating > 5).ToList();
+                    }
+                    else if(ratingFilter == "neutral")
+                    {
+                        books = books.Where(b => b.Rating == 5).ToList();
+                    }
+                    else if(ratingFilter == "negative")
+                    {
+                        books = books.Where(b => b.Rating < 5).ToList();
+                    }
+                }
+
+            }
+
+            int pageSize = 20;
+            var paginatedBooks = books.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.Categories = _context.Categories.Select(c => c.Genre).OrderBy(c => c).ToList();
+            ViewBag.PageNumber = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)books.Count() / pageSize);
+
+            return View(paginatedBooks);
         }
 
         public IActionResult PublicIndex()
