@@ -1,0 +1,28 @@
+﻿.home-span, .home-span i{
+    font-size: 0.9em !important;
+}
+
+.home-span a{
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.2em;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.home-span::after{
+    content: '';
+    position: absolute;
+    width: 4em;
+    height: 0.5em;
+    top: 1.7em;
+    background: rgba(228,228,228, 0.8);
+    opacity: 0;
+    transform: scale(0);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.home-span:hover::after{
+    opacity: 1 !important;
+    transform: scale(1);
+}

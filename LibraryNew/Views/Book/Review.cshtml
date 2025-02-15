@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/css/common/variables/components.css"/>
     <link rel="stylesheet" href="~/css/shared/site.css"/>
     <link rel="stylesheet" href="~/css/common/document-components/chatbot.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @* <link rel="stylesheet" href="~/css/common/document-components/filter-style.css"/> *@
 </head>
 <body>
@@ -19,58 +20,22 @@
 
             <div class="chart-info">
 
+                <h6>Rating chart info</h6>
+
                 <p>Average: <span>@Math.Round(ViewBag.AverageRating, 2)</span></p>
                 <p>Positive: <span>@ViewBag.PositiveReviews</span></p>
                 <p>Neutral: <span>@ViewBag.NeutralReviews</span></p>
                 <p>Negative: <span>@ViewBag.NegativeReviews</span></p>
 
             </div>
-            <canvas class="review-chart" id="reviewChart" width="200" height="100"></canvas>
-        </div>
-
-
-        <div class="static-features">
-
-            <div class="quote-space">
-                <div class="quote-text-space">
-                    <div class="left-quotemark-container">
-                        <i class="material-icons quote-mark">format_quote</i>
-                    </div>
-                    <h5 class="quote-text"></h5>
-                    <div class="right-quotemark-container">
-                        <i class="material-icons quote-mark">format_quote</i>
-                    </div>
-                    <div class="quote-author">
-                        <h6 class="quote-author"></h6>
-                    </div>
-                </div>
-            </div>
-
-            <button class="static-redirect-publicLB"><a asp-controller="Book" asp-action="PublicIndex">Check out the public library -></a></button>
-
-            <div class="chatbot-activeSpace">
-                <div class="chatbot-title d-flex flex-row">
-                    <p>ChatBot Library Helper</p>
-                    <button class="d-flex justify-content-center align-items-center"><i class="material-icons">arrow_drop_down</i></button>
-                </div>
-                <div class="chatbot-textSpace">
-                    <div class="response">
-                        <div class="response-avatar d-flex flex-row">
-                            <i class="material-icons">book</i>
-                            <p>This will be the question?</p>
-                        </div>
-                        <div class="response-text"></div>
-                    </div>
-                </div>
-                <div class="cb-initial-question d-flex flex-row">
-                    <input type="text" id="cb-initial-input" name="cb-initial-input" placeholder="Ask a question..." />
-                    <button type="button" class="flex-center"><i class="material-icons">eject</i></button>
-                </div>
+            <div class="divider"></div>
+            <div class="canvas-container">
+                <canvas class="review-chart" id="reviewChart" width="100" height="50"></canvas>
             </div>
         </div>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.querySelector('.quote-text').textContent = sessionStorage.getItem('quote');
         document.querySelector('.quote-author').textContent = sessionStorage.getItem('quote-author');
@@ -115,3 +80,42 @@
     });
 
 </script>
+
+@*<div class="static-features">
+
+    <div class="quote-space">
+        <div class="quote-text-space">
+            <div class="left-quotemark-container">
+                <i class="material-icons quote-mark">format_quote</i>
+            </div>
+            <h5 class="quote-text"></h5>
+            <div class="right-quotemark-container">
+                <i class="material-icons quote-mark">format_quote</i>
+            </div>
+            <div class="quote-author">
+                <h6 class="quote-author"></h6>
+            </div>
+        </div>
+    </div>
+ <button class="static-redirect-publicLB"><a asp-controller="Book" asp-action="PublicIndex">Check out the public library -></a></button>
+
+<div class="chatbot-activeSpace">
+    <div class="chatbot-title d-flex flex-row">
+        <p>ChatBot Library Helper</p>
+        <button class="d-flex justify-content-center align-items-center"><i class="material-icons">arrow_drop_down</i></button>
+    </div>
+    <div class="chatbot-textSpace">
+        <div class="response">
+            <div class="response-avatar d-flex flex-row">
+                <i class="material-icons">book</i>
+                <p>This will be the question?</p>
+            </div>
+            <div class="response-text"></div>
+        </div>
+    </div>
+    <div class="cb-initial-question d-flex flex-row">
+        <input type="text" id="cb-initial-input" name="cb-initial-input" placeholder="Ask a question..." />
+        <button type="button" class="flex-center"><i class="material-icons">eject</i></button>
+    </div>
+</div> 
+</div>*@

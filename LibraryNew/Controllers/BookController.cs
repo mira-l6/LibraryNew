@@ -25,84 +25,7 @@ namespace LibraryNew.Controllers
         [Authorize(Roles ="User, Admin")]
         public IActionResult Index(int page = 1,string name="", string actionType = "", string sortOption = "", string sortOrder = "", List<string> genreFilter = null, string awardFilter = "", string ratingFilter = "")
         {
-            var books = _context.Books.Include(b => b.BookAuthors).Include(b => b.Category).Where(b => !b.IsPublic).ToList();
-
-            foreach(var book in books)
-            {
-                foreach (var ba in book.BookAuthors)
-                {
-                    ba.Author = _context.Authors.FirstOrDefault(a => a.Id == ba.AuthorId);
-                }
-            }
-
-            if (actionType == "find" && !string.IsNullOrEmpty(name))
-            {
-                books = books
-                    .Where(b => b.Title.Contains(name, StringComparison.OrdinalIgnoreCase) ||
-                                b.BookAuthors.Any(a => a.Author.FirstName.Contains(name, StringComparison.OrdinalIgnoreCase)) ||
-                                b.BookAuthors.Any(a => a.Author.LastName.Contains(name, StringComparison.OrdinalIgnoreCase))).ToList();
-            }
-
-            if(actionType == "sort" && !String.IsNullOrEmpty(sortOption))
-            {
-                switch (sortOption)
-                {
-                    case "title":
-                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.Title).ToList() : books.OrderBy(b => b.Title).ToList();
-                        break;
-                    case "author":
-                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.BookAuthors.FirstOrDefault().Author.FirstName).ToList()
-                                                      : books.OrderBy(b => b.BookAuthors.FirstOrDefault().Author.FirstName).ToList();
-                        break;
-                    case "rating":
-                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.Rating).ToList() : books.OrderBy(b => b.Rating).ToList();
-                        break;
-                    case "language":
-                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.Language).ToList() : books.OrderBy(b => b.Language).ToList();
-                        break;
-                    case "pages":
-                        books = (sortOrder == "desc") ? books.OrderByDescending(b => b.Pages).ToList() : books.OrderBy(b => b.Pages).ToList();
-                        break;
-                }
-            }
-
-            if(actionType == "filter" && (genreFilter != null || !String.IsNullOrEmpty(awardFilter) || !String.IsNullOrEmpty(ratingFilter)))
-            {
-
-                if(genreFilter != null && genreFilter.Any())
-                {
-                    books = books.Where(b => b.Category != null && genreFilter.Contains(b.Category.Genre)).ToList();
-                }
-
-                if (!String.IsNullOrEmpty(awardFilter))
-                {
-                    if(awardFilter == "awarded")
-                    {
-                        books = books.Where(b => b.BookAward).ToList();
-                    }
-                    else if(awardFilter == "not-awarded")
-                    {
-                        books = books.Where(b => b.BookAward == false).ToList();
-                    }
-                }
-
-                if (!String.IsNullOrEmpty(ratingFilter))
-                {
-                    if(ratingFilter == "positive")
-                    {
-                        books = books.Where(b => b.Rating > 5).ToList();
-                    }
-                    else if(ratingFilter == "neutral")
-                    {
-                        books = books.Where(b => b.Rating == 5).ToList();
-                    }
-                    else if(ratingFilter == "negative")
-                    {
-                        books = books.Where(b => b.Rating < 5).ToList();
-                    }
-                }
-
-            }
+            var books = GetBooks(page, name, actionType, sortOption, sortOrder, genreFilter, awardFilter, ratingFilter, isPublic: false);
 
             int pageSize = 20;
             var paginatedBooks = books.Skip((page - 1) * pageSize).Take(pageSize).ToList();
@@ -114,10 +37,18 @@ namespace LibraryNew.Controllers
             return View(paginatedBooks);
         }
 
-        public IActionResult PublicIndex()
+        public IActionResult PublicIndex(int page = 1, string name = "", string actionType = "", string sortOption = "", string sortOrder = "", List<string> genreFilter = null, string awardFilter = "", string ratingFilter = "")
         {
-            List<Book> publicBooks = _context.Books.Where(b => b.IsPublic && b.ApprovalStatus == "Approved").ToList();
-            return View(publicBooks);
+            var books = GetBooks(page, name, actionType, sortOption, sortOrder, genreFilter, awardFilter, ratingFilter, isPublic: true);
+
+            int pageSize = 20;
+            var paginatedBooks = books.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.Categories = _context.Categories.Select(c => c.Genre).OrderBy(c => c).ToList();
+            ViewBag.PageNumber = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)books.Count() / pageSize);
+
+            return View(paginatedBooks);
         }
 
         [Authorize(Roles ="Admin")]
@@ -281,6 +212,7 @@ namespace LibraryNew.Controllers
         {
             Book currentBook= _context.Books.Include(b => b.BookAuthors).Include(b => b.Category).FirstOrDefault(b => b.Id == model.book.Id);
 
+            ModelState.Remove("book.ApprovalStatus");
             if (!ModelState.IsValid)
             {
                 var modelCategories = _context.Categories.Select(c => new SelectListItem
@@ -354,7 +286,99 @@ namespace LibraryNew.Controllers
             return filePath;
         }
 
+        [HttpGet]
+        public JsonResult SearchAuthors(string query)
+        {
+            if (String.IsNullOrEmpty(query))
+            {
+                var allAuthors = _context.Authors.Select(a => new { a.Id, fullName = a.FirstName + " " + a.LastName }).ToList();
+                return Json(allAuthors);
+            }
+
+            var authors = _context.Authors.Where(a => a.FirstName.Contains(query) || a.LastName.Contains(query))
+                            .Select(a => new
+                            {
+                                a.Id,
+                                FullName = a.FirstName +" " +  a.LastName
+                            }).ToList();
+
+            return Json(authors);
+        }
+
+
+        private List<Book> GetBooks(int page, string name, string actionType, string sortOption, string sortOrder,
+        List<string> genreFilter, string awardFilter, string ratingFilter, bool isPublic)
+        {
+            var books = _context.Books
+                .Include(b => b.BookAuthors)
+                .Include(b => b.Category)
+                .Where(b => b.IsPublic == isPublic)
+                .ToList();
+
+            foreach (var book in books)
+            {
+                foreach (var ba in book.BookAuthors)
+                {
+                    ba.Author = _context.Authors.FirstOrDefault(a => a.Id == ba.AuthorId);
+                }
+            }
+
+            if (actionType == "find" && !string.IsNullOrEmpty(name))
+            {
+                books = books
+                    .Where(b => b.Title.Contains(name, StringComparison.OrdinalIgnoreCase) ||
+                                b.BookAuthors.Any(a => a.Author.FirstName.Contains(name, StringComparison.OrdinalIgnoreCase)) ||
+                                b.BookAuthors.Any(a => a.Author.LastName.Contains(name, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+            }
+
+            if (actionType == "sort" && !string.IsNullOrEmpty(sortOption))
+            {
+                books = sortOption switch
+                {
+                    "title" => (sortOrder == "desc") ? books.OrderByDescending(b => b.Title).ToList() : books.OrderBy(b => b.Title).ToList(),
+                    "author" => (sortOrder == "desc") ? books.OrderByDescending(b => b.BookAuthors.FirstOrDefault()?.Author.FirstName).ToList()
+                                                     : books.OrderBy(b => b.BookAuthors.FirstOrDefault()?.Author.FirstName).ToList(),
+                    "rating" => (sortOrder == "desc") ? books.OrderByDescending(b => b.Rating).ToList() : books.OrderBy(b => b.Rating).ToList(),
+                    "language" => (sortOrder == "desc") ? books.OrderByDescending(b => b.Language).ToList() : books.OrderBy(b => b.Language).ToList(),
+                    "pages" => (sortOrder == "desc") ? books.OrderByDescending(b => b.Pages).ToList() : books.OrderBy(b => b.Pages).ToList(),
+                    _ => books
+                };
+            }
+
+            if (actionType == "filter" && (genreFilter != null || !string.IsNullOrEmpty(awardFilter) || !string.IsNullOrEmpty(ratingFilter)))
+            {
+                if (genreFilter != null && genreFilter.Any())
+                {
+                    books = books.Where(b => b.Category != null && genreFilter.Contains(b.Category.Genre)).ToList();
+                }
+
+                if (!string.IsNullOrEmpty(awardFilter))
+                {
+                    books = awardFilter switch
+                    {
+                        "awarded" => books.Where(b => b.BookAward).ToList(),
+                        "not-awarded" => books.Where(b => !b.BookAward).ToList(),
+                        _ => books
+                    };
+                }
+
+                if (!string.IsNullOrEmpty(ratingFilter))
+                {
+                    books = ratingFilter switch
+                    {
+                        "positive" => books.Where(b => b.Rating > 5).ToList(),
+                        "neutral" => books.Where(b => b.Rating == 5).ToList(),
+                        "negative" => books.Where(b => b.Rating < 5).ToList(),
+                        _ => books
+                    };
+                }
+            }
+
+            return books;
+        }
+
     }
 
-   
+
 }

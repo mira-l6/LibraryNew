@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<LibraryNew.Models.Book>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "PublicIndex";
 }
 
 @functions {
@@ -12,32 +12,277 @@
     }
 }
 
-<h1>Public Library</h1>
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/common/document-components/background.css" />
+    <link rel="stylesheet" href="~/css/common/variables/components.css" />
+    <link rel="stylesheet" href="~/css/shared/site.css" />
+    <link rel="stylesheet" href="~/css/common/document-components/chatbot.css" />
+    <link rel="stylesheet" href="~/css/pages/books-index.css" />
+</head>
+<body>
+    <div class="greeting-body">
+        <h2><a asp-controller="Book" asp-action="PublicIndex">Welcome, to the library</a></h2>
+    </div>
 
-<div class="d-flex flex-wrap justify-content-around">
 
-    @foreach (var item in Model)
-    {
-        <div class="card m-2" style="width: 18rem; max-height: 33rem">
-            <img class="card-img-top h-50" style="object-fit: cover" src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title) (@Html.DisplayFor(modelItem => item.PublishingYear)) </h5>
-                <p class="card-text">@TrimDescr(item.Description, 100)</p>
+    <div class="main-body">
 
-                <p class="card-text">
-                    <strong>Rating:</strong> @Html.DisplayFor(modelItem => item.Rating) / 10
-                </p>
-                <p class="card-text">
-                    <strong>Review:</strong> @Html.DisplayFor(modelItem => item.Review)
-                </p>
-                <p class="card-text">
-                    <strong>Publicity:</strong> @Html.DisplayFor(modelItem => item.IsPublic)
-                </p>
+        <div class="book-display d-flex flex-wrap justify-content-around">
 
-                <a asp-action="Details" asp-controller="Book" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+            <div class="sort-filter-space d-flex flex-column">
+                <div class="sort-space">
+                    <p class="d-flex home-span"><a asp-controller="Book" asp-action="PublicIndex"><i class="material-icons">chevron_left</i>Home</a></p>
+                    <form action="/Book/PublicIndex" method="get">
+                        <input type="text" name="name" id="search-submit-btn" placeholder="Search..." />
+                        <div class="sort-filter-buttons">
+                            <div class="filter-section">
+                                <button type="submit" name="actionType" value="find" class="d-flex justify-content-center align-items-center">Search<i class="material-icons ps-2">search</i></button>
+                            </div>
+                            <div class="sort-section">
+                                <button type="button" class="d-flex justify-content-center align-items-center">Sort<i class="material-icons ps-2">list</i></button>
+                                <div class="sort-hiddenForm">
+
+                                    <select name="sortOption">
+                                        <option value="none" selected>Sorting option</option>
+                                        <option value="title">Title</option>
+                                        <option value="author">Author</option>
+                                        <option value="rating">Rating</option>
+                                        <option value="language">Language</option>
+                                        <option value="pages">Pages</option>
+                                    </select>
+
+                                    <div class="d-flex">
+                                        <div class="d-flex">
+                                            <input type="radio" name="sortOrder" value="asc" id="asc" />
+                                            <label for="asc"><i class="material-icons">arrow_upward</i></label>
+                                        </div>
+                                        <div class="d-flex">
+                                            <input type="radio" name="sortOrder" value="desc" id="desc" />
+                                            <label for="desc"><i class="material-icons">arrow_downward</i></label>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" name="actionType" value="sort" class="sort-submit-btn">
+                                        Apply
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="create-partial-button"><a asp-action="Create"><i class="material-icons">add</i></a></p>
+                </div>
+                <div class="pagination-container d-flex flex-row">
+
+                    <span class="page-box"><a asp-action="PublicIndex" asp-controller="Book" asp-route-page="@ViewBag.PageNumber">@ViewBag.PageNumber</a></span>
+                    @if (ViewBag.PageNumber > 1)
+                    {
+                        <span class="arrow-box"><a asp-action="PublicIndex" asp-route-page="@(ViewBag.PageNumber - 1)" asp-route-name="@ViewBag.CurrentFilter" asp-route-sortOrder="@ViewBag.CurrentSort"><i class="material-icons">arrow_back</i></a></span>
+                        if (ViewBag.PageNumber == ViewBag.TotalPages)
+                        {
+                            <span class="page-box">@ViewBag.PageNumber</span>
+                        }
+                        else
+                        {
+                            <span class="page-box">@ViewBag.PageNumber</span>
+                            <span class="page-dots">...</span>
+                            <span class="page-box"><a asp-action="PublicIndex" asp-route-page="@(ViewBag.TotalPages)">@ViewBag.TotalPages</a></span>
+                        }
+
+
+                    }
+
+                    @if (ViewBag.PageNumber < ViewBag.TotalPages)
+                    {
+                        <div class="d-flex flex-row pe-3">
+                            <span class="page-box">@ViewBag.PageNumber</span>
+                            <span class="page-dots">...</span>
+                            <span class="page-box"><a asp-action="PublicIndex" asp-route-page="@(ViewBag.TotalPages)">@ViewBag.TotalPages</a></span>
+                            @* трябва да добавя формуляр за въведена страница *@
+                        </div>
+                        <span class="arrow-box"><a asp-action="PublicIndex" asp-route-page="@(ViewBag.PageNumber + 1)" asp-route-name="@ViewBag.CurrentFilter" asp-route-sortOrder="@ViewBag.CurrentSort"><i class="material-icons">arrow_forward</i></a></span>
+                    }
+                </div>
+            </div>
+
+            <div class="bookshelf-display">
+
+                <aside class="filter-display">
+                    <div class="filter-heading d-flex justify-content-between">
+                        <h5>Filters</h5>
+                        <div class="plant-decor" style="display: none">
+                            <img src="~/publicImages/small-plant.png" />
+                        </div>
+                        <div id="showHideFilter">
+                            <span><i class="material-icons">arrow_drop_down</i></span>
+                        </div>
+                    </div>
+                    <div>
+                        <form class="filter-hiddenForm" method="get" action="/Book/PublicIndex">
+                            <div class="filter-subsection">
+                                <h6>Genres</h6>
+                                <div class="filter-options">
+                                    @foreach (var genre in ViewBag.Categories)
+                                    {
+                                        <div class="d-flex">
+                                            <input type="checkbox" name="genreFilter" value="@genre" id="@genre" />
+                                            <label for="@genre">@genre</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="filter-subsection">
+                                <h6>Book award</h6>
+                                <div class="filter-options">
+                                    <div>
+                                        <input type="checkbox" name="awardFilter" value="awarded" id="awarded" />
+                                        <label for="awarded">awarded</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="awardFilter" value="not-awarded" id="not-awarded" />
+                                        <label for="not-awarded">awardless</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="filter-subsection">
+                                <h6>Rating</h6>
+                                <div class="filter-options">
+                                    <div>
+                                        <input type="checkbox" name="ratingFilter" value="positive" id="positive" />
+                                        <label for="positive">positive (6 - 10)</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="ratingFilter" value="neutral" id="neutral" />
+                                        <label for="neutral">neutral (5)</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" name="ratingFilter" value="negative" id="negative" />
+                                        <label for="negative">negative (1-4)</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" name="actionType" value="filter" class="filter-submit-btn">Apply</button>
+                        </form>
+                    </div>
+                </aside>
+
+                <div class="bookshelf">
+
+
+                    @foreach (var item in Model)
+                    {
+                    //single book
+                        <div class="book" onclick="navigateBookDetails(@item.Id)">
+                            <div class="book-image"><img src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Book cover" /></div>
+                            <div class="book-info">
+                                <div class="book-main-info">
+                                    <p class="book-title">@Html.DisplayFor(model => item.Title)</p>
+
+                                    @if (item.BookAuthors.ToList().Count > 0 && item.BookAuthors != null)
+                                    {
+
+                                        for (int i = 0; i < item.BookAuthors.ToList().Count; i++)
+                                        {
+
+                                            <p class="book-author">
+                                                @Html.DisplayFor(model => item.BookAuthors.ToList()[i].Author.FirstName)
+                                                @Html.DisplayFor(model => item.BookAuthors.ToList()[i].Author.LastName)
+                                            </p>
+                                        }
+                                    }
+                                    <p>--------------------</p>
+                                </div>
+
+                                <button class="book-details-btn"><a asp-controller="Book" asp-route-id="@item.Id" asp-action="Details">Details</a></button>
+
+                                <div class="book-sub-info">
+                                    @if (item.Rating > 0)
+                                    {
+                                        <p class="book-rating">
+                                            @for (int i = 0; i < (item.Rating); i++)
+                                            {
+                                                <i class="material-icons">star</i>
+                                            }
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+            <div class="chatbot-container">
+                <img src="~/publicImages/chatbot-icon.gif" />
             </div>
         </div>
-    }
+    </div>
+
+    <div class="sticky-endpoint"></div>
+
+    <script src="~/js/views/booksIndex.js"></script>
+    <script>
+        // document.querySelector('.quote-text').textContent = sessionStorage.getItem('quote');
+        // document.querySelector('.quote-author').textContent = sessionStorage.getItem('quote-author');
+
+        const sortButton = document.querySelector('.sort-section button');
+        const filterButton = document.querySelector('filter-section button');
+        const searchButton = document.querySelector('#search-submit-btn');
+
+        const showHideFilterButton = document.querySelector('#showHideFilter');
+
+        const sortForm = document.querySelector('.sort-hiddenForm');
+        const filterForm = document.querySelector('.filter-hiddenForm');
+
+        function navigateBookDetails(id){
+            location.href = `/Book/Details/${id}`;
+        }
+
+        sortButton.addEventListener('click', (e) => {
+
+            e.stopPropagation(); // Prevent click event from bubbling up
+            if (sortForm.style.opacity === '1') {
+                sortForm.style.opacity = '0';
+                sortForm.style.transform = 'scale(0)';
+                sortForm.style.display = 'none';
+            } else {
+                sortForm.style.display = 'flex';
+                sortForm.style.opacity = '1';
+                sortForm.style.transform = 'scale(1)';
+            }
+        })
+
+        showHideFilterButton.addEventListener('click', (e) => {
+
+            if(filterForm.style.display == ""){
+                filterForm.style.display = "flex";
+            }
+            else if(filterForm.style.display !== 'none'){
+                filterForm.style.display = "none";
+            }else if(filterForm.style.display !== "flex"){
+                filterForm.style.display = "flex";
+            }
+        })
+
+        // const stickyDiv = document.querySelector('.sort-filter-space');
+        // const endPoint = document.querySelector('.sticky-endpoint');
+
+        // window.addEventListener('scroll', () => {
+
+        //     const stickyRect = stickyDiv.getBoundingClientRect();
+        //     const endRect = endPoint.getBoundingClientRect();
+
+        //     if (endRect.top <= stickyRect.bottom) {
+        //         stickyDiv.style.position = 'absolute';
+        //         stickyDiv.style.top = `${endPoint.offsetTop - stickyDiv.offsetHeight}px`;
+        //     } else {
+        //         stickyDiv.style.position = 'sticky';
+        //         stickyDiv.style.top = '3.5em';
+        //     }
+        // });
 
 
-</div>
+    </script>
+</body>

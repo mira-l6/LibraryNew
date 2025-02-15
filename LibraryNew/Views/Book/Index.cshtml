@@ -125,7 +125,7 @@
                 <aside class="filter-display">
                     <div class="filter-heading d-flex justify-content-between">
                         <h5>Filters</h5>
-                        <div class="plant-decor">
+                        <div class="plant-decor" style="display: none">
                             <img src="~/publicImages/small-plant.png"/>
                         </div>
                         <div id="showHideFilter">
@@ -176,8 +176,8 @@
                                 </div>
                             </div>
 
+                            <button type="submit" name="actionType" value="filter" class="filter-submit-btn">Apply</button>
                         </form>
-                        <button type="submit" name="actionType" value="filter" class="filter-submit-btn">Apply</button>
                     </div>
                 </aside>
 
@@ -187,7 +187,7 @@
                 @foreach (var item in Model)
                     {
                     //single book
-                        <div class="book">
+                        <div class="book" onclick="navigateBookDetails(@item.Id)">
                             <div class="book-image"><img src="@Html.DisplayFor(modelItem => item.ImagePath)" alt="Book cover"/></div>
                             <div class="book-info">
                                 <div class="book-main-info">

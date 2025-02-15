@@ -19,7 +19,7 @@ async function setClientView() {
     const quote = await fetchQuote();
     console.log(quote);
 
-    quoteText.textContent = quote.quote;
+    quoteText.textContent = quote.quote + "";
 
     if (quote.author.split(',')[1] === undefined) {
 

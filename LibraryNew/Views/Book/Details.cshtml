@@ -4,98 +4,107 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-<a asp-action="Index">Back to List</a>
+<head>
+    <link rel="stylesheet" href="~/css/pages/books-details.css"/>
+    <link rel="stylesheet" href="~/css/shared/site.css"/>
+    @* <link rel="stylesheet" href="~/css/common/document-components/home-span.css"/> *@
+</head>
+<body>
+    <div class="quote-book-space">
 
-<div class="row">
-    <div class="col-xl-4">
-        <img src="@Model.ImagePath" width="100%" height="100%"></img>
+        <div class="quote d-flex">
+            <p>" </p>
+            <p class="quote-text"></p>
+            <p> "</p>
+            <p style="display: none" class="quote-info"><span class="quote-author">   <em></span><span class="quote-resource"></span></em> </p>
+        </div>
+
     </div>
-    <div class="col-xl-5">
-        <h2>@Html.DisplayFor(model => model.Title)</h2>
+    <div class="main-book-space d-flex">
+        <div class="book-image">
+            <p class="d-flex home-span"><a asp-controller="Book" asp-action="Index"><i class="material-icons">chevron_left</i>Home</a></p>
+            <div class="resp-divider" style="display: none"></div>
+            <img src="@Model.ImagePath"/>
+            <div class="owner-buttons">
+                <div class="modify-btn">
+                    <a asp-controller="Book" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a asp-controller="Book" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                </div>
+            </div>
+        </div>
+        <div class="book-content">
+            <div class="title-section">
+                <h3>@Model.Title</h3>
+                <p> Author : 
+                    @for (int i = 0; i < Model.BookAuthors.Count(); i++)
+                    {
 
-        @if(Model.BookAuthors.ToList().Count > 0){
-        <p>@Html.DisplayFor(model => model.BookAuthors.ToList()[0].Author.FirstName)
-            @Html.DisplayFor(model => model.BookAuthors.ToList()[0].Author.LastName)</p>
-        }
-        
-        <a class="btn btn-primary" asp-action="Read" asp-controller="Book" asp-route-id="@Model.Id">Read</a>
-
-        <p>@Html.DisplayFor(model => model.Description)</p>
-    </div>
-    <div class="col-xl-3">
-        <table class="table table-striped">
-         
-            <tbody>
-                <tr>
-                    <th scope="row">Author/s</th>
-                    <td>
-                        @for(int i = 0; i< Model.BookAuthors.Count(); i++)
+                        @Model.BookAuthors.ToList()[i].Author.FirstName @: @Model.BookAuthors.ToList()[i].Author.LastName
+                        @if (i != Model.BookAuthors.Count() - 1)
                         {
-                            
-                            @Model.BookAuthors.ToList()[i].Author.FirstName @: @Model.BookAuthors.ToList()[i].Author.LastName
-                            @if (i != Model.BookAuthors.Count() - 1)
-                            {
-                                @:,
+                            @:,
+                        }
+                    }
+                </p>
+            </div>
+            <div class="description-section">
+                <h5>Description</h5>
+                <p>@Model.Description</p>
+                <a class="read-btn" asp-action="Read" asp-controller="Book" asp-route-id="@Model.Id">Read</a>
+            </div>
+            <div class="info-section">
+                <h5>Characteristics</h5>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Category.Genre)</th>
+                            <td>@Html.DisplayFor(m => m.Category.Genre)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.PublishingYear)</th>
+                            <td>@Html.DisplayFor(m => m.PublishingYear)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.IsPublic)</th>
+                            <td>Private library</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Pages)</th>
+                            <td>@Html.DisplayFor(m => m.Pages)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Language)</th>
+                            <td>@Html.DisplayFor(m => m.Language)</td>
+                        </tr>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.BookAward)</th>
+                            @if(Model.BookAward == false){
+                                <td>none</td>
+                            }else{
+                                <td>awarded</td>
                             }
-                        }
-                    </td>
-                </tr>
-                <tr>
-                    <th>Publishing Year</th>
-                    <td>@Html.DisplayFor(model => model.PublishingYear)</td>
-                </tr>
-                <tr>
-                    <th>Pages</th>
-                    <td>@Html.DisplayFor(model => model.Pages)</td>
-                </tr>
-                <tr>
-                    <th>Language</th>
-                    <td>@Html.DisplayFor(model => model.Language)</td>
-                </tr>
-                <tr>
-                    <th>Category</th>
-                    <td>@Html.DisplayFor(model => model.Category.Genre)</td>
-                </tr>
-                <tr>
-                    <th>Rating</th>
-                    <td>@Html.DisplayFor(model => model.Rating)</td>
-                </tr>
-                <tr>
-                    <th>Review</th>
-                    <td>@Html.DisplayFor(model => model.Review)</td>
-                </tr>
-                <tr>
-                    <th>Publicity</th>
-                    <td>
-                        @if (Model.IsPublic)
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="review-section">
+                <h5>Review</h5>
+                @if (Model.Rating > 0)
+                {
+                    <p class="book-rating">
+                        @for (int i = 0; i < (Model.Rating); i++)
                         {
-                            @:Yes
+                            <i class="material-icons golden">star</i>
                         }
-                        else
-                        {
-                            @:No
+                        @for(int i = 0; i < 10 - (Model.Rating); i++){
+                            <i class="material-icons silver">star</i>
                         }
-                    </td>
-                </tr>
-                <tr>
-                    <th>Book award</th>
-                    <td>
-                        @if (Model.BookAward)
-                        {
-                            @:Yes
-                        }
-                        else
-                        {
-                            @:No
-                        }
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </p>
+                }
+                <p>@Model.Review</p>
+            </div>
+        </div>
     </div>
 
-</div>
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-dark mt-2">Edit</a>
-<a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-dark mt-2">Delete</a>
-</div>
+    <script src="/js/partialViews/quoteView.js"></script>
+</body>

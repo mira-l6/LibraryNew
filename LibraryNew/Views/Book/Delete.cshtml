@@ -11,6 +11,8 @@
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.Title)
         @Html.HiddenFor(m => m.Description)
+
+        @* <input type="hidden" name="returnUrl" value="@Request.Headers["Referer"]" /> *@
         <button type="submit">Confirm</button>
     }
 

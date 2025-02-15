@@ -1,0 +1,70 @@
+﻿nav {
+    position: fixed !important;
+    background: white;
+    width: 100vw;
+    z-index: 100;
+}
+.greeting-body {
+    padding: 8em 4em 4em 4em !important;
+    align-items: end !important;
+}
+
+.top-section {
+    border-bottom: 1px solid rgba(228, 228, 228, 0.5);
+    background: white;
+    z-index: 2;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    padding: 1em 2em 2em 2em;
+    position: sticky;
+    top: 3.5em;
+}
+
+.author-create-btn {
+    border: none;
+    padding: 0.7em;
+    width: 100%;
+    border-bottom: 2px solid var(--primary-darkBrown-color);
+    display: flex;
+    justify-content: space-between;
+    background: rgba(228, 228, 228, 0.3);
+}
+.author-create-btn a{
+    font-weight: 300;
+}
+.author-admin-btn{
+    height: 3em;
+    border: none;
+    padding: 0 1em;
+    background: var(--primary-darkBrown-color);
+}
+.author-admin-btn a{
+    color: white !important;
+    font-weight: 300 !important;
+}
+
+.create-section {
+    width: 85%;
+    background: white !important;
+}
+
+.table-section{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 3em;
+    padding-bottom: 1em;
+    margin-bottom: 3em;
+    border-bottom: 1px solid rgba(228,228,228, 0.5);
+    background: rgba(228, 228, 228, 0.4);
+}
+#authorsTable_wrapper{
+    width: 90%;
+    padding: 1em;
+}
+
+.dataTables_filter, .dataTables_length {
+    background: white !important;
+    padding: 0.5em 1em;
+}

@@ -22,8 +22,8 @@
     background: var(--primary-darkBrown-color);
     padding: 0.5em;
     border-radius: 10px;
-    /*    border: 1px solid rgba(255,255,255, 0.4);*/
     font-weight: 600;
+
 }
 
 .quote-space {
@@ -411,6 +411,10 @@
 }
 #showHideFilter:hover{
     /*da dovarsha animaciqta*/
+}
+
+.filter-options label{
+    font-weight: 400;
 }
 
 @media(max-width: 1450px) {

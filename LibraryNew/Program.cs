@@ -85,9 +85,6 @@ namespace LibraryNew
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-
-
-
             //Roles
 
             using (var scope = app.Services.CreateScope())
@@ -128,11 +125,6 @@ namespace LibraryNew
                 }
 
             }
-
-
-
-
-
 
             app.Run();
 

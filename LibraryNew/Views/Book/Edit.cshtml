@@ -3,64 +3,164 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<head>
+    <link rel="stylesheet" href="~/css/shared/book-form.css"/>
+</head>
+<body>
+    <div class="create-section">
+        <div class="brown-divider"></div>
+        <div class="main-create-section">
+            <form class="create-form" asp-action="Edit" method="post" enctype="multipart/form-data">
 
-<h1>Edit</h1>
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="@Model.book.Id" />
-    <div>
-        <label asp-for="@Model.book.Title" class="col-1 mb-1"></label>
-        <span class="text-danger" asp-validation-for="@Model.book.Title"></span>
-        <input asp-for="@Model.book.Title" class="form-control"/>
-    </div>
-    <div>
-        <label asp-for="@Model.book.Description" class="col-1 mb-1"></label>
-        <span class="text-danger" asp-validation-for="@Model.book.Description"></span>
-        <input asp-for="@Model.book.Description" class="form-control"/>
-    </div>
-    <div>
-        <label asp-for="FileIMG" class="col-1 mb-1"></label>
-        <span class="text-danger" asp-validation-for="@Model.ImgAcceptType"></span>
-        <input asp-for="FileIMG" accept="@Model.ImgAcceptType" class="form-control" />
-    </div>
-    <div>
-        <label asp-for="FilePDF" class="col-1 mb-1"></label>
-        <span class="text-danger" asp-validation-for="@Model.FilePDF"></span>
-        <input asp-for="FilePDF" accept="@Model.PDFAcceptTypes" class="form-control" />
-    </div>
-    <div>
-        <label asp-for="book.PublishingYear" class="col-1 mb-1"></label>
-        <span class="text-danger" asp-validation-for="@Model.book.PublishingYear"></span>
-        <input asp-for="book.PublishingYear" class="form-control" />
-    </div>
-    <div>
-        <label asp-for="book.Pages" class="col-1 mb-1"></label>
-        <span class="text-danger" asp-validation-for="@Model.book.Pages"></span>
-        <input asp-for="book.Pages" class="form-control" />
-    </div>
-    <div>
-        <label asp-for="book.Language" class="col-1 mb-1"></label>
-        <span class="text-danger" asp-validation-for="@Model.book.Language"></span>
-        <input asp-for="book.Language" class="form-control" />
-    </div>
-    <div>
-        <label asp-for="book.BookAward" class="col-1 mb-1"></label>
-        <span class="text-danger" asp-validation-for="@Model.book.BookAward"></span>
-        <input asp-for="book.BookAward" class="mb-1" />
-    </div>
-    <div>
-        <label asp-for="book.CategoryId"></label>
-        <span class="text-danger" asp-validation-for="@Model.book.CategoryId"></span>
-        <select asp-for="book.CategoryId" asp-items="Model.categories" class="form-select">
-        </select>
+                <h1>Edit</h1>
+                <input type="hidden" asp-for="@Model.book.Id" />
+                <div class="title-lang-section">
+                    <div>
+                        <span class="text-danger" asp-validation-for="@Model.book.Title"></span>
+                        <input asp-for="@Model.book.Title" class="form-control" placeholder="Title"/>
+                    </div>
+                    <div>
+                        <span class="text-danger" asp-validation-for="@Model.book.Language"></span>
+                        <input asp-for="book.Language" class="form-control" placeholder="Language" />
+                    </div>
+                </div>
+                <div class="file-desc-section">
+                    <div class="desc-section">
+                        <div>
+                            <span class="text-danger" asp-validation-for="@Model.book.Description"></span>
+                             <textarea placeholder="Description" asp-for="@Model.book.Description" class="form-control"></textarea>
+                        </div>
+                        <div class="d-flex"> 
+                            <span class="text-danger" asp-validation-for="@Model.FilePDF"></span>
+                            <input asp-for="FilePDF" accept="@Model.PDFAcceptTypes" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="image-section">
+                        <label asp-for="@Model.FileIMG"><i class="material-icons">add</i></label>
+                        <span asp-validation-for="@Model.FileIMG" class="text-danger"></span>
+                        <input asp-for="@Model.FileIMG" class="photo-input" onchange="PreviewImage();" />
+                        <div class="image-preview-container">
+                            <img id="uploadPreview" style="border: none; outline: none"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-year-section">
+                    <div>
+                        <span asp-validation-for="@Model.book.PublishingYear" class="text-danger"></span>
+                        <input placeholder="Publishing year" asp-for="book.PublishingYear" class="form-control" />
+                    </div>
+                    <div>
+                        <span asp-validation-for="@Model.book.Pages" class="text-danger"></span>
+                        <input placeholder="Pages" asp-for="book.Pages" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="short-ans-section">
+                    <div class="rating-subsection">
+                        <div>
+                            <label asp-for="book.Rating" class="col-1 mb-1"></label>
+                            <span asp-validation-for="@Model.book.Rating" class="text-danger"></span>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <input asp-for="book.Rating" class="form-control" />
+                            <p class="d-flex"> /
+                                @for(int i = 0; i < 10; i++){
+                                    <i class="material-icons golden">star</i>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bullet-options">
+                    <div  class="option">
+                        <label asp-for="book.IsPublic" class="col-1 mb-1"></label>
+                        <span asp-validation-for="@Model.book.IsPublic" class="text-danger"></span>
+                        <input asp-for="book.IsPublic" class="mb-1" onchange="updateOptionText(this, 'first')" />
+                        <span class="first option-answer">No</span>
+                    </div>
+                    <div class="option">
+                        <label asp-for="book.BookAward" class="col-1 mb-1"></label>
+                        <span asp-validation-for="@Model.book.BookAward" class="text-danger"></span>
+                        <input asp-for="book.BookAward" class="mb-1"  onchange="updateOptionText(this, 'second')" />
+                        <span class="second option-answer">No</span>
+                    </div>
+                </div>
+
+                <div class="review-genre-section">
+                    <div>
+                        <label asp-for="@Model.book.Review" style="font-weight: 500"></label>
+                        <span asp-validation-for="@Model.book.Review" class="text-danger"></span>
+                        <textarea asp-for="book.Review" placeholder="Review" class="form-control"></textarea>
+                    </div>
+                
+                    <div>
+                        <span asp-validation-for="@Model.book.CategoryId" class="text-danger"></span>
+                        <select asp-for="book.CategoryId" asp-items="Model.categories" class="form-select">
+                            <option selected>Genre</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="author-section">
+                    <span asp-validation-for="@Model.SelectedAuthorsId" class="text-danger"></span>
+
+                    <!-- Search input -->
+                    <input type="text" id="search-authors" placeholder="Search authors..." class="form-control mb-2">
+
+                    <select id="authors-select" asp-for="SelectedAuthorsId" asp-items="Model.authors" class="form-select" multiple="multiple">
+                    </select>
+                </div>
+                <input type="submit" value="Save" />
+            </form>
+
+        </div>
+        <div class="brown-divider"></div>
     </div>
 
-    <div>
-        <label asp-for="SelectedAuthorsId"></label>
-        <span class="text-danger" asp-validation-for="@Model.SelectedAuthorsId"></span>
-        <select asp-for="SelectedAuthorsId" asp-items="Model.authors" class="form-select" multiple="multiple">
-        </select>
-    </div>
+    <script>
+        function PreviewImage() {
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.querySelector(".photo-input").files[0]);
 
-    <input type="submit" value="Save" />
-</form>
+            oFReader.onload = function (oFREvent) {
+            document.getElementById("uploadPreview").src = oFREvent.target.result;
+            };
+        };
+
+        function updateOptionText(checkbox, spanClass){
+            const span = document.querySelector(`.${spanClass}`);
+            if (checkbox.checked) {
+                span.textContent = "Yes";
+            } else {
+                span.textContent = "No";
+            }
+        }
+
+        document.querySelector('#search-authors').addEventListener('input', (e) => {
+
+            const query = e.target.value;
+            console.log(query);
+
+            fetch(`/Book/SearchAuthors?query=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+
+                const select = document.querySelector('#authors-select');
+                select.innerHTML = '';
+                console.log(data);
+
+                data.forEach(author => {
+                    const option = document.createElement('option');
+                    option.value = author.id;
+                    option.textContent = author.fullName;
+                    console.log(option)
+                    select.appendChild(option);
+                });
+        })
+        .catch(error => console.error('Error fetching authors:', error));
+        })
+        
+    </script>
+</body>
 

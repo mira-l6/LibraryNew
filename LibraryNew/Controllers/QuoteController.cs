@@ -27,7 +27,10 @@ namespace LibraryNew.Controllers
         [HttpGet]
         public async Task<IActionResult> GetQuote()
         {
-            IQueryable<QuoteSet> quotes = _context.QuoteSets;
+            Random random = new Random();
+            int skip = random.Next(0, 300_000);
+            int take = random.Next(1, 150_000);
+            IQueryable<QuoteSet> quotes = _context.QuoteSets.Skip(skip).Take(take);
 
             var randomQuote = await _quote.GetRandomQuote(quotes);
 
